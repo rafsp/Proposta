@@ -1,0 +1,3669 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>KSI Vendas - Sistema Completo de Gestão de Comissões</title>
+    
+    <!-- Favicon oficial -->
+    <link rel="icon" type="image/x-icon" href="https://areacliente.kingspan-isoeste.com.br/favicon.ico">
+    
+    <!-- Fonts oficiais do KSI -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        /* ========== RESET E BASE - PADRÃO KSI ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        :root {
+            /* Cores oficiais Kingspan/KSI */
+            --ksi-blue-primary: #004B87;
+            --ksi-blue-dark: #003865;
+            --ksi-blue-light: #0066B3;
+            --ksi-red: #E31E24;
+            --ksi-gray-dark: #333333;
+            --ksi-gray-medium: #666666;
+            --ksi-gray-light: #999999;
+            --ksi-gray-bg: #F5F5F5;
+            --ksi-white: #FFFFFF;
+            --ksi-green: #4CAF50;
+            --ksi-orange: #FF9800;
+            --ksi-yellow: #FFC107;
+            --ksi-purple: #9C27B0;
+            
+            /* Gradientes oficiais */
+            --ksi-gradient: linear-gradient(135deg, #004B87 0%, #003865 100%);
+            --ksi-gradient-red: linear-gradient(135deg, #E31E24 0%, #C41E3A 100%);
+            
+            /* Sombras padrão */
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 8px rgba(0,0,0,0.12);
+            --shadow-lg: 0 8px 16px rgba(0,0,0,0.15);
+            --shadow-xl: 0 12px 24px rgba(0,0,0,0.18);
+        }
+
+        body {
+            font-family: 'Roboto', 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--ksi-gray-dark);
+            background-color: var(--ksi-gray-bg);
+        }
+
+        /* ========== TELA DE LOGIN - ESTILO KSI ========== */
+        .login-wrapper {
+            min-height: 100vh;
+            background: var(--ksi-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" x="10" y="10" width="30" height="30"/><rect fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" x="60" y="60" width="30" height="30"/></svg>') repeat;
+            animation: backgroundMove 60s linear infinite;
+        }
+
+        @keyframes backgroundMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .login-box {
+            background: var(--ksi-white);
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 440px;
+            padding: 48px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .login-logo img {
+            width: 200px;
+            height: auto;
+        }
+
+        .login-logo-text {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--ksi-blue-primary);
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            color: var(--ksi-gray-medium);
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        /* ========== FORMULÁRIOS - PADRÃO KSI ========== */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: var(--ksi-gray-dark);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-label .required {
+            color: var(--ksi-red);
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #D0D0D0;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s;
+            background-color: var(--ksi-white);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--ksi-blue-primary);
+            box-shadow: 0 0 0 3px rgba(0, 75, 135, 0.1);
+        }
+
+        .form-input:disabled {
+            background-color: #F0F0F0;
+            cursor: not-allowed;
+        }
+
+        .form-input.error {
+            border-color: var(--ksi-red);
+        }
+
+        .form-error {
+            color: var(--ksi-red);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* ========== BOTÕES - PADRÃO KSI ========== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: var(--ksi-blue-primary);
+            color: var(--ksi-white);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--ksi-blue-dark);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: var(--ksi-green);
+            color: var(--ksi-white);
+        }
+
+        .btn-danger {
+            background: var(--ksi-red);
+            color: var(--ksi-white);
+        }
+
+        .btn-warning {
+            background: var(--ksi-orange);
+            color: var(--ksi-white);
+        }
+
+        .btn-secondary {
+            background: var(--ksi-gray-medium);
+            color: var(--ksi-white);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--ksi-blue-primary);
+            color: var(--ksi-blue-primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--ksi-blue-primary);
+            color: var(--ksi-white);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+
+        .btn-lg {
+            padding: 16px 32px;
+            font-size: 16px;
+        }
+
+        /* ========== LAYOUT PRINCIPAL ========== */
+        .app-wrapper {
+            display: none;
+            min-height: 100vh;
+            background: var(--ksi-gray-bg);
+        }
+
+        .app-wrapper.active {
+            display: block;
+        }
+
+        /* ========== HEADER - ESTILO KSI ========== */
+        .header {
+            background: var(--ksi-white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--ksi-blue-primary);
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 4px;
+            color: var(--ksi-gray-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            background: var(--ksi-gray-bg);
+            color: var(--ksi-blue-primary);
+        }
+
+        .nav-link.active {
+            background: var(--ksi-blue-primary);
+            color: var(--ksi-white);
+        }
+
+        .header-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            background: var(--ksi-gray-bg);
+            border-radius: 24px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--ksi-gradient);
+            color: var(--ksi-white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .user-name {
+            font-weight: 500;
+            color: var(--ksi-gray-dark);
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: var(--ksi-white);
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            min-width: 200px;
+            display: none;
+            overflow: hidden;
+        }
+
+        .user-dropdown.active {
+            display: block;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--ksi-gray-dark);
+            text-decoration: none;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .dropdown-item:hover {
+            background: var(--ksi-gray-bg);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: #E0E0E0;
+            margin: 4px 0;
+        }
+
+        /* ========== LAYOUT COM SIDEBAR ========== */
+        .app-body {
+            display: flex;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 24px;
+            gap: 24px;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: var(--ksi-white);
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            padding: 24px;
+            height: fit-content;
+            position: sticky;
+            top: 88px;
+        }
+
+        .sidebar-section {
+            margin-bottom: 32px;
+        }
+
+        .sidebar-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--ksi-gray-light);
+            margin-bottom: 12px;
+            padding: 0 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-item {
+            margin-bottom: 4px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            color: var(--ksi-gray-dark);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .sidebar-link:hover {
+            background: var(--ksi-gray-bg);
+            color: var(--ksi-blue-primary);
+        }
+
+        .sidebar-link.active {
+            background: var(--ksi-blue-primary);
+            color: var(--ksi-white);
+        }
+
+        .sidebar-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-badge {
+            margin-left: auto;
+            background: var(--ksi-red);
+            color: var(--ksi-white);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        /* ========== CONTEÚDO PRINCIPAL ========== */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .page-header {
+            margin-bottom: 24px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--ksi-gray-dark);
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--ksi-gray-medium);
+        }
+
+        /* ========== CARDS - ESTILO KSI ========== */
+        .card {
+            background: var(--ksi-white);
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #E0E0E0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--ksi-gray-dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        /* ========== STATS CARDS ========== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--ksi-white);
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--ksi-blue-primary);
+        }
+
+        .stat-card.success::before {
+            background: var(--ksi-green);
+        }
+
+        .stat-card.warning::before {
+            background: var(--ksi-orange);
+        }
+
+        .stat-card.danger::before {
+            background: var(--ksi-red);
+        }
+
+        .stat-card.info::before {
+            background: var(--ksi-blue-light);
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--ksi-gray-bg);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--ksi-gray-dark);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--ksi-gray-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-change {
+            margin-top: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-change.positive {
+            color: var(--ksi-green);
+        }
+
+        .stat-change.negative {
+            color: var(--ksi-red);
+        }
+
+        /* ========== TABELAS - ESTILO KSI ========== */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table thead {
+            background: var(--ksi-gray-bg);
+        }
+
+        .table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--ksi-gray-medium);
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #E0E0E0;
+            white-space: nowrap;
+        }
+
+        .table td {
+            padding: 16px;
+            border-bottom: 1px solid #F0F0F0;
+            font-size: 14px;
+            color: var(--ksi-gray-dark);
+        }
+
+        .table tbody tr {
+            transition: background 0.3s;
+        }
+
+        .table tbody tr:hover {
+            background: #FAFAFA;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* ========== BADGES ========== */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-primary {
+            background: rgba(0, 75, 135, 0.1);
+            color: var(--ksi-blue-primary);
+        }
+
+        .badge-success {
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--ksi-green);
+        }
+
+        .badge-warning {
+            background: rgba(255, 152, 0, 0.1);
+            color: var(--ksi-orange);
+        }
+
+        .badge-danger {
+            background: rgba(227, 30, 36, 0.1);
+            color: var(--ksi-red);
+        }
+
+        .badge-info {
+            background: rgba(0, 102, 179, 0.1);
+            color: var(--ksi-blue-light);
+        }
+
+        .badge-purple {
+            background: rgba(156, 39, 176, 0.1);
+            color: var(--ksi-purple);
+        }
+
+        /* ========== ALERTS ========== */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: start;
+            gap: 12px;
+        }
+
+        .alert-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .alert-content h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .alert-content p {
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .alert-warning {
+            background: #FFF3E0;
+            border-left: 4px solid var(--ksi-orange);
+            color: #E65100;
+        }
+
+        .alert-info {
+            background: #E3F2FD;
+            border-left: 4px solid var(--ksi-blue-light);
+            color: #0D47A1;
+        }
+
+        .alert-success {
+            background: #E8F5E9;
+            border-left: 4px solid var(--ksi-green);
+            color: #1B5E20;
+        }
+
+        .alert-danger {
+            background: #FFEBEE;
+            border-left: 4px solid var(--ksi-red);
+            color: #B71C1C;
+        }
+
+        /* ========== TREEVIEW MELHORADO ========== */
+        .tree-view {
+            font-size: 14px;
+        }
+
+        .tree-node {
+            margin-bottom: 8px;
+        }
+
+        .tree-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--ksi-white);
+            border: 1px solid #E0E0E0;
+            margin-bottom: 8px;
+        }
+
+        .tree-item:hover {
+            background: var(--ksi-gray-bg);
+            border-color: var(--ksi-blue-primary);
+        }
+
+        .tree-toggle {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: transform 0.3s;
+            color: var(--ksi-gray-medium);
+        }
+
+        .tree-toggle.expanded {
+            transform: rotate(90deg);
+        }
+
+        .tree-label {
+            flex: 1;
+            font-weight: 500;
+            color: var(--ksi-gray-dark);
+        }
+
+        .tree-value {
+            font-weight: 600;
+            color: var(--ksi-blue-primary);
+            font-size: 15px;
+        }
+
+        .tree-status {
+            margin-left: 12px;
+        }
+
+        .tree-children {
+            display: none;
+            margin-left: 28px;
+            padding-left: 16px;
+            border-left: 2px solid #E0E0E0;
+            margin-top: 8px;
+        }
+
+        .tree-children.expanded {
+            display: block;
+        }
+
+        .tree-child-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            background: #FAFAFA;
+            border-radius: 4px;
+            margin-bottom: 6px;
+            border: 1px solid #E8E8E8;
+        }
+
+        .tree-child-label {
+            flex: 1;
+            font-size: 13px;
+            color: var(--ksi-gray-medium);
+        }
+
+        .tree-child-value {
+            font-weight: 600;
+            color: var(--ksi-gray-dark);
+            font-size: 14px;
+        }
+
+        /* ========== COMMISSION DETAILS CARD ========== */
+        .commission-detail-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--ksi-white);
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .commission-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .commission-detail-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .commission-detail-value {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .commission-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .commission-detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .commission-detail-label {
+            font-size: 12px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .commission-detail-data {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* ========== INSTALLMENTS TABLE ========== */
+        .installments-table {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .installments-table th {
+            background: rgba(0, 75, 135, 0.05);
+            padding: 12px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--ksi-gray-medium);
+        }
+
+        .installments-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #F0F0F0;
+        }
+
+        .installments-table .installment-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .installments-table .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .installments-table .status-indicator.paid {
+            background: var(--ksi-green);
+        }
+
+        .installments-table .status-indicator.pending {
+            background: var(--ksi-orange);
+        }
+
+        .installments-table .status-indicator.late {
+            background: var(--ksi-red);
+        }
+
+        /* ========== PROGRESS BARS ========== */
+        .progress-container {
+            margin: 20px 0;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .progress-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--ksi-gray-medium);
+        }
+
+        .progress-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ksi-gray-dark);
+        }
+
+        .progress {
+            width: 100%;
+            height: 24px;
+            background: #E0E0E0;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--ksi-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ksi-white);
+            font-size: 11px;
+            font-weight: 600;
+            transition: width 0.5s ease;
+        }
+
+        .progress-bar.success {
+            background: var(--ksi-green);
+        }
+
+        .progress-bar.warning {
+            background: var(--ksi-orange);
+        }
+
+        .progress-bar.danger {
+            background: var(--ksi-red);
+        }
+
+        /* ========== SUMMARY CARDS ========== */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .summary-card {
+            background: var(--ksi-gray-bg);
+            padding: 16px;
+            border-radius: 8px;
+            border-left: 4px solid var(--ksi-blue-primary);
+        }
+
+        .summary-card.success {
+            border-left-color: var(--ksi-green);
+        }
+
+        .summary-card.warning {
+            border-left-color: var(--ksi-orange);
+        }
+
+        .summary-card.danger {
+            border-left-color: var(--ksi-red);
+        }
+
+        .summary-title {
+            font-size: 12px;
+            color: var(--ksi-gray-medium);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--ksi-gray-dark);
+        }
+
+        .summary-subtitle {
+            font-size: 12px;
+            color: var(--ksi-gray-medium);
+            margin-top: 4px;
+        }
+
+        /* ========== LOADING ========== */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top-color: var(--ksi-white);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ========== TOAST ========== */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background: var(--ksi-white);
+            padding: 16px 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 320px;
+            margin-top: 12px;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .toast-message {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--ksi-green);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--ksi-red);
+        }
+
+        .toast.warning {
+            border-left: 4px solid var(--ksi-orange);
+        }
+
+        .toast.info {
+            border-left: 4px solid var(--ksi-blue-light);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1024px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .header-nav {
+                display: none;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-body {
+                padding: 16px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Correção para canvas/gráficos */
+        canvas {
+            max-width: 100%;
+            height: auto !important;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        
+        .chart-container canvas {
+            position: absolute !important;
+            top: 0;
+            left: 0;
+        }
+        @media print {
+            .header,
+            .sidebar,
+            .btn,
+            .modal {
+                display: none !important;
+            }
+            
+            .main-content {
+                margin: 0;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Tela de Login -->
+    <div id="loginScreen" class="login-wrapper">
+        <div class="login-box">
+            <div class="login-logo">
+                <img src="https://ksi-vendas.kingspan-isoeste.com.br/assets/img/nova-logo-ksivendas.png" alt="KSI Vendas">
+            </div>
+            
+            <h1 class="login-logo-text">Sistema de Comissões</h1>
+            <p class="login-subtitle">Portal completo de gestão e cálculo de comissões</p>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">E-mail ou CPF</label>
+                    <input type="text" class="form-input" id="username" required 
+                           placeholder="tiago.silva@ksi.com.br" 
+                           value="tiago.silva@ksi.com.br">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Senha</label>
+                    <input type="password" class="form-input" id="password" required 
+                           placeholder="Digite sua senha" 
+                           value="ksi2024">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Perfil de Acesso</label>
+                    <select class="form-select" id="userRole">
+                        <option value="admin">Administrador</option>
+                        <option value="manager">Gerente Regional</option>
+                        <option value="vendor">Vendedor</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-full btn-lg">
+                    Entrar no Sistema
+                </button>
+            </form>
+            
+            <div style="text-align: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid #E0E0E0;">
+                <small style="color: var(--ksi-gray-medium);">
+                    Sistema v3.0 | © 2024 Kingspan Isoeste<br>
+                    <span style="color: var(--ksi-green);">✔</span> Sistema integrado com TOPIS/DYNASUL
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aplicação Principal -->
+    <div id="appWrapper" class="app-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-container">
+                <div class="header-brand">
+                    <div class="header-logo">
+                        <img src="https://ksi-vendas.kingspan-isoeste.com.br/assets/img/nova-logo-ksivendas.png" alt="KSI Vendas">
+                    </div>
+                </div>
+                
+                <nav class="header-nav">
+                    <div class="nav-link active" onclick="navigate('dashboard')">
+                        <span>📊</span> Dashboard
+                    </div>
+                    <div class="nav-link" onclick="navigate('simulator')">
+                        <span>🧮</span> Simulador
+                    </div>
+                    <div class="nav-link" onclick="navigate('commission-order')">
+                        <span>📦</span> Por Pedido
+                    </div>
+                    <div class="nav-link" onclick="navigate('commission-vendor')">
+                        <span>👤</span> Por Vendedor
+                    </div>
+                    <div class="nav-link" onclick="navigate('commission-installment')">
+                        <span>💳</span> Por Parcela
+                    </div>
+                    <div class="nav-link" onclick="navigate('campaigns')">
+                        <span>🎯</span> Campanhas
+                    </div>
+                    <div class="nav-link" onclick="navigate('rules')">
+                        <span>📋</span> Regras
+                    </div>
+                </nav>
+                
+                <div class="header-user" onclick="toggleUserMenu()">
+                    <div class="user-avatar" id="userAvatar">CS</div>
+                    <span class="user-name" id="userName">Tiago Da Silva</span>
+                    <span>▼</span>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="dropdown-item">
+                            <span>👤</span> Meu Perfil
+                        </div>
+                        <div class="dropdown-item">
+                            <span>⚙️</span> Configurações
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item" onclick="logout()">
+                            <span>🚪</span> Sair
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Body -->
+        <div class="app-body">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Comissões</div>
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-item">
+                            <div class="sidebar-link" onclick="navigate('rules')">
+                                <span class="sidebar-icon">📋</span>
+                                Regras
+                            </div>
+                        </li>
+                        <li class="sidebar-item">
+                            <div class="sidebar-link" onclick="navigate('simulator')">
+                                <span class="sidebar-icon">🧮</span>
+                                Simulador
+                                <span class="badge badge-success" style="margin-left: auto;">NOVO</span>
+                            </div>
+                        </li>
+                        <li class="sidebar-item">
+                            <div class="sidebar-link active" onclick="navigate('dashboard')">
+                                <span class="sidebar-icon">📊</span>
+                                Dashboard
+                            </div>
+                        </li>
+                        <li class="sidebar-item">
+                            <div class="sidebar-link" onclick="navigate('commission-order')">
+                                <span class="sidebar-icon">📦</span>
+                                Por Pedido
+                                <span class="sidebar-badge">15</span>
+                            </div>
+                        </li>
+                        <li class="sidebar-item">
+                            <div class="sidebar-link" onclick="navigate('commission-vendor')">
+                                <span class="sidebar-icon">👤</span>
+                                Por Vendedor
+                            </div>
+                        </li>
+                        <li class="sidebar-item">
+                            <div class="sidebar-link" onclick="navigate('commission-installment')">
+                                <span class="sidebar-icon">💳</span>
+                                Por Parcela
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Campanhas</div>
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-item">
+                            <div class="sidebar-link" onclick="navigate('campaigns')">
+                                <span class="sidebar-icon">🎯</span>
+                                Campanhas Ativas
+                            </div>
+                        </li>
+                        <li class="sidebar-item">
+                            <div class="sidebar-link" onclick="navigate('overlap')">
+                                <span class="sidebar-icon">⚠️</span>
+                                Sobreposições
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Administração</div>
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-item">
+                            <div class="sidebar-link" onclick="navigate('upload')">
+                                <span class="sidebar-icon">📤</span>
+                                Upload Excel
+                            </div>
+                        </li>
+                        <li class="sidebar-item">
+                            <div class="sidebar-link" onclick="navigate('rules')">
+                                <span class="sidebar-icon">📋</span>
+                                Regras
+                            </div>
+                        </li>
+                        <li class="sidebar-item">
+                            <div class="sidebar-link" onclick="navigate('integrations')">
+                                <span class="sidebar-icon">🔗</span>
+                                Integrações
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Dashboard Section -->
+                <section id="dashboardSection" class="content-section active">
+                    <div class="page-header">
+                        <h1 class="page-title">Dashboard de Comissões</h1>
+                        <p class="page-subtitle">Visão geral completa do sistema de comissões</p>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">💰</div>
+                            <div class="stat-value">R$ 247.850</div>
+                            <div class="stat-label">Total Comissões Mês</div>
+                            <div class="stat-change positive">
+                                <span>↑</span> 12.5% vs mês anterior
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card success">
+                            <div class="stat-icon">✅</div>
+                            <div class="stat-value">R$ 185.430</div>
+                            <div class="stat-label">Parcelas Liquidadas</div>
+                            <div class="stat-change positive">
+                                <span>✓</span> 74.8% do total
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card warning">
+                            <div class="stat-icon">⏳</div>
+                            <div class="stat-value">R$ 62.420</div>
+                            <div class="stat-label">A Receber</div>
+                            <div class="stat-change">
+                                <span>•</span> 25.2% pendente
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card info">
+                            <div class="stat-icon">📈</div>
+                            <div class="stat-value">1.85%</div>
+                            <div class="stat-label">Comissão Média</div>
+                            <div class="stat-change positive">
+                                <span>↑</span> 0.15% este mês
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <span>📊</span> Resumo de Comissões - Visão Consolidada
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="summary-grid">
+                                <div class="summary-card success">
+                                    <div class="summary-title">Realizado</div>
+                                    <div class="summary-value">R$ 185.430</div>
+                                    <div class="summary-subtitle">142 parcelas pagas</div>
+                                </div>
+                                <div class="summary-card warning">
+                                    <div class="summary-title">A Receber</div>
+                                    <div class="summary-value">R$ 62.420</div>
+                                    <div class="summary-subtitle">48 parcelas pendentes</div>
+                                </div>
+                                <div class="summary-card">
+                                    <div class="summary-title">Total Geral</div>
+                                    <div class="summary-value">R$ 247.850</div>
+                                    <div class="summary-subtitle">190 parcelas totais</div>
+                                </div>
+                            </div>
+                            
+                            <div class="progress-container">
+                                <div class="progress-header">
+                                    <span class="progress-label">Progresso de Liquidação</span>
+                                    <span class="progress-value">74.8% Liquidado</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar success" style="width: 74.8%">R$ 185.430</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <span>📈</span> Últimas Movimentações
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="tree-view">
+                                <!-- Movimentação 1 -->
+                                <div class="tree-node">
+                                    <div class="tree-item" onclick="toggleTree(this)">
+                                        <span class="tree-toggle">▶</span>
+                                        <span class="tree-label">29/01/2024 - PED-2024-0145</span>
+                                        <span class="tree-value">R$ 2.450,00</span>
+                                        <span class="tree-status">
+                                            <span class="badge badge-success">Liquidado</span>
+                                        </span>
+                                    </div>
+                                    <div class="tree-children">
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">📦 Pedido:</span>
+                                            <span class="tree-child-value">PED-2024-0145</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">🏢 Cliente:</span>
+                                            <span class="tree-child-value">Construtora ABC</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">👤 Vendedor:</span>
+                                            <span class="tree-child-value">João Silva</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">💳 Parcela:</span>
+                                            <span class="tree-child-value">3/6</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">💰 Valor Base:</span>
+                                            <span class="tree-child-value">R$ 75.000,00</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">% Comissão:</span>
+                                            <span class="tree-child-value">1.8%</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">🎯 Campanha:</span>
+                                            <span class="tree-child-value">Black Friday 2024 (+0.5%)</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Movimentação 2 -->
+                                <div class="tree-node">
+                                    <div class="tree-item" onclick="toggleTree(this)">
+                                        <span class="tree-toggle">▶</span>
+                                        <span class="tree-label">28/01/2024 - PED-2024-0132</span>
+                                        <span class="tree-value">R$ 1.875,00</span>
+                                        <span class="tree-status">
+                                            <span class="badge badge-success">Liquidado</span>
+                                        </span>
+                                    </div>
+                                    <div class="tree-children">
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">📦 Pedido:</span>
+                                            <span class="tree-child-value">PED-2024-0132</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">🏢 Cliente:</span>
+                                            <span class="tree-child-value">Indústria XYZ</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">👤 Vendedor:</span>
+                                            <span class="tree-child-value">Maria Santos</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">💳 Parcela:</span>
+                                            <span class="tree-child-value">2/12</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Movimentação 3 -->
+                                <div class="tree-node">
+                                    <div class="tree-item" onclick="toggleTree(this)">
+                                        <span class="tree-toggle">▶</span>
+                                        <span class="tree-label">27/01/2024 - PED-2024-0128</span>
+                                        <span class="tree-value">R$ 3.200,00</span>
+                                        <span class="tree-status">
+                                            <span class="badge badge-warning">A Receber</span>
+                                        </span>
+                                    </div>
+                                    <div class="tree-children">
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">📦 Pedido:</span>
+                                            <span class="tree-child-value">PED-2024-0128</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">🏢 Cliente:</span>
+                                            <span class="tree-child-value">Frigorífico Sul</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">👤 Vendedor:</span>
+                                            <span class="tree-child-value">Pedro Costa</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">💳 Parcela:</span>
+                                            <span class="tree-child-value">1/3</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">⚠️ Vencimento:</span>
+                                            <span class="tree-child-value" style="color: var(--ksi-orange);">15/02/2024</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Mais movimentações -->
+                                <div class="tree-node">
+                                    <div class="tree-item" onclick="toggleTree(this)">
+                                        <span class="tree-toggle">▶</span>
+                                        <span class="tree-label">26/01/2024 - PED-2024-0089</span>
+                                        <span class="tree-value">R$ 1.800,00</span>
+                                        <span class="tree-status">
+                                            <span class="badge badge-success">Liquidado</span>
+                                        </span>
+                                    </div>
+                                    <div class="tree-children">
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">📦 Pedido:</span>
+                                            <span class="tree-child-value">PED-2024-0089</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">🏢 Cliente:</span>
+                                            <span class="tree-child-value">Metalúrgica XYZ</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">👤 Vendedor:</span>
+                                            <span class="tree-child-value">João Silva</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Simulador Section -->
+                <section id="simulatorSection" class="content-section">
+                    <div class="page-header">
+                        <h1 class="page-title">Simulador de Comissões</h1>
+                        <p class="page-subtitle">Calcule automaticamente comissões considerando campanhas e descontos</p>
+                    </div>
+                    
+                    <div class="alert alert-warning">
+                        <span class="alert-icon">⚠️</span>
+                        <div class="alert-content">
+                            <h4>Atenção: Desconto reduz comissão!</h4>
+                            <p>Descontos aplicados acima do limite permitido serão descontados diretamente da comissão do vendedor.</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <span>🧮</span> Simulação de Comissão
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <form id="simulatorForm" onsubmit="simulateCommission(event)">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Tipo de Vendedor</label>
+                                        <select class="form-select" id="simVendorType" onchange="updateSimulation()">
+                                            <option value="internal">Interno</option>
+                                            <option value="external">Externo</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label">Família de Produto</label>
+                                        <select class="form-select" id="simProductFamily" onchange="loadBestCampaign()">
+                                            <option value="">Selecione...</option>
+                                            <option value="PAINEL">PAINEL</option>
+                                            <option value="TELHA">TELHA</option>
+                                            <option value="PORTA">PORTA</option>
+                                            <option value="PERFIL">PERFIL</option>
+                                            <option value="ACESSORIO">ACESSÓRIO</option>
+                                            <option value="ISOLAMENTO">ISOLAMENTO</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Tabela de Preço</label>
+                                        <select class="form-select" id="simPriceTable">
+                                            <option value="BASESTD">BASESTD</option>
+                                            <option value="OLDSC">OLDSC</option>
+                                            <option value="TABPROMO">TABPROMO</option>
+                                            <option value="ESPECIAL">ESPECIAL</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Valor do Pedido (R$)</label>
+                                        <input type="number" class="form-input" id="simOrderValue" 
+                                               placeholder="0.00" step="0.01" min="0" onkeyup="updateSimulation()">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label">Desconto (%) <span style="color: var(--ksi-red);"></span></label>
+                                        <input type="number" class="form-input" id="simDiscount" 
+                                               placeholder="0.00" step="0.01" min="0" max="100" onkeyup="updateSimulation()">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Número de Parcelas</label>
+                                        <select class="form-select" id="simInstallments" onchange="updateSimulation()">
+                                            <option value="1">À vista</option>
+                                            <option value="2">2x</option>
+                                            <option value="3">3x</option>
+                                            <option value="6">6x</option>
+                                            <option value="12">12x</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Campanha Aplicável</label>
+                                        <select class="form-select" id="simCampaign" onchange="updateSimulation()">
+                                            <option value="">Nenhuma campanha</option>
+                                        </select>
+                                        <small id="campaignInfo" style="color: var(--ksi-green); display: none;">
+                                            ✅ Melhor campanha selecionada automaticamente!
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    Calcular Comissão
+                                </button>
+                            </form>
+
+                            <!-- Resultado da Simulação -->
+                            <div id="simulationResult" style="display: none; margin-top: 32px;">
+                                <div class="commission-detail-card">
+                                    <div class="commission-detail-header">
+                                        <div class="commission-detail-title">Resultado da Simulação</div>
+                                        <div class="commission-detail-value" id="simTotalCommission">R$ 0,00</div>
+                                    </div>
+                                    <div class="commission-detail-grid">
+                                        <div class="commission-detail-item">
+                                            <span class="commission-detail-label">Comissão Base</span>
+                                            <span class="commission-detail-data" id="simBaseCommission">0%</span>
+                                        </div>
+                                        <div class="commission-detail-item">
+                                            <span class="commission-detail-label">Bônus Campanha</span>
+                                            <span class="commission-detail-data" id="simCampaignBonus">+0%</span>
+                                        </div>
+                                        <div class="commission-detail-item">
+                                            <span class="commission-detail-label">Penalidade Desconto</span>
+                                            <span class="commission-detail-data" id="simDiscountPenalty" style="color: var(--ksi-red);">-0%</span>
+                                        </div>
+                                        <div class="commission-detail-item">
+                                            <span class="commission-detail-label">Comissão Final</span>
+                                            <span class="commission-detail-data" id="simFinalCommission">0%</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="summary-grid" style="margin-top: 24px;">
+                                    <div class="summary-card">
+                                        <div class="summary-title">Valor por Parcela</div>
+                                        <div class="summary-value" id="simInstallmentValue">R$ 0,00</div>
+                                        <div class="summary-subtitle" id="simInstallmentInfo">1x</div>
+                                    </div>
+                                    <div class="summary-card success">
+                                        <div class="summary-title">Comissão Vendedor</div>
+                                        <div class="summary-value" id="simVendorCommission">R$ 0,00</div>
+                                        <div class="summary-subtitle">Por venda</div>
+                                    </div>
+                                    <div class="summary-card warning">
+                                        <div class="summary-title">Comissão Gerente</div>
+                                        <div class="summary-value" id="simManagerCommission">R$ 0,00</div>
+                                        <div class="summary-subtitle">0.5% fixo</div>
+                                    </div>
+                                </div>
+
+                                <div id="discountWarningBox" class="alert alert-danger" style="display: none; margin-top: 24px;">
+                                    <span class="alert-icon">🔴</span>
+                                    <div class="alert-content">
+                                        <h4>Desconto Excessivo Detectado!</h4>
+                                        <p id="discountWarningText"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Campanhas Section -->
+                <section id="campaignsSection" class="content-section">
+                    <div class="page-header">
+                        <h1 class="page-title">Campanhas Ativas</h1>
+                        <p class="page-subtitle">Gestão de campanhas e sobreposições</p>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card success">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Campanhas Ativas</div>
+                        </div>
+                        <div class="stat-card warning">
+                            <div class="stat-icon">⚠️</div>
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">Sobreposições</div>
+                        </div>
+                        <div class="stat-card info">
+                            <div class="stat-icon">💰</div>
+                            <div class="stat-value">2.5%</div>
+                            <div class="stat-label">Maior Bônus</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <span>🎯</span> Campanhas em Vigência
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Campanha</th>
+                                            <th>Produtos</th>
+                                            <th>Bônus</th>
+                                            <th>Vigência</th>
+                                            <th>Status</th>
+                                            <th>Sobreposições</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Black Friday 2024</strong></td>
+                                            <td>PAINEL, TELHA</td>
+                                            <td><span class="badge badge-success">+2.5%</span></td>
+                                            <td>01/11/2024 - 30/11/2024</td>
+                                            <td><span class="badge badge-success">Ativa</span></td>
+                                            <td><span class="badge badge-warning">Q4 2024, Natal</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Campanha Q4 2024</strong></td>
+                                            <td>TODOS</td>
+                                            <td><span class="badge badge-info">+1.0%</span></td>
+                                            <td>01/10/2024 - 31/12/2024</td>
+                                            <td><span class="badge badge-success">Ativa</span></td>
+                                            <td><span class="badge badge-warning">Black Friday, Natal</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Natal 2024</strong></td>
+                                            <td>PORTA, ACESSÓRIO</td>
+                                            <td><span class="badge badge-info">+1.5%</span></td>
+                                            <td>01/12/2024 - 31/12/2024</td>
+                                            <td><span class="badge badge-success">Ativa</span></td>
+                                            <td><span class="badge badge-warning">Q4 2024</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Liquidação Verão</strong></td>
+                                            <td>ISOLAMENTO</td>
+                                            <td><span class="badge badge-info">+0.75%</span></td>
+                                            <td>01/01/2024 - 28/02/2024</td>
+                                            <td><span class="badge badge-success">Ativa</span></td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Aniversário KSI</strong></td>
+                                            <td>TODOS</td>
+                                            <td><span class="badge badge-success">+2.0%</span></td>
+                                            <td>15/03/2024 - 31/03/2024</td>
+                                            <td><span class="badge badge-warning">Futura</span></td>
+                                            <td>-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Regras Section -->
+                <section id="rulesSection" class="content-section">
+                    <div class="page-header">
+                        <h1 class="page-title">Regras de Comissão</h1>
+                        <p class="page-subtitle">564 níveis VTI/VTE + regras especiais</p>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">📋</div>
+                            <div class="stat-value">568</div>
+                            <div class="stat-label">Total de Regras</div>
+                        </div>
+                        <div class="stat-card success">
+                            <div class="stat-icon">✅</div>
+                            <div class="stat-value">564</div>
+                            <div class="stat-label">Níveis VTI/VTE</div>
+                        </div>
+                        <div class="stat-card warning">
+                            <div class="stat-icon">📦</div>
+                            <div class="stat-value">93</div>
+                            <div class="stat-label">Famílias de Produtos</div>
+                        </div>
+                        <div class="stat-card info">
+                            <div class="stat-icon">💳</div>
+                            <div class="stat-value">9</div>
+                            <div class="stat-label">Tabelas de Preço</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <span>📋</span> Regras Ativas
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Código</th>
+                                            <th>Tipo Vendedor</th>
+                                            <th>Família</th>
+                                            <th>Tabela</th>
+                                            <th>Desconto</th>
+                                            <th>Comissão</th>
+                                            <th>Vigência</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>REGRA_10</strong></td>
+                                            <td><span class="badge badge-primary">Interno</span></td>
+                                            <td>TODOS</td>
+                                            <td>BASESTD</td>
+                                            <td>0% - 10%</td>
+                                            <td><strong>2.5%</strong></td>
+                                            <td>01/07/2024 - ∞</td>
+                                            <td><span class="badge badge-success">Ativa</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>REGRA_8</strong></td>
+                                            <td><span class="badge badge-warning">Externo</span></td>
+                                            <td>TODOS</td>
+                                            <td>BASESTD</td>
+                                            <td>0% - 15%</td>
+                                            <td><strong>1.0%</strong></td>
+                                            <td>01/01/2022 - ∞</td>
+                                            <td><span class="badge badge-success">Ativa</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>VTI_001</strong></td>
+                                            <td><span class="badge badge-primary">Interno</span></td>
+                                            <td>TODOS</td>
+                                            <td>BASESTD</td>
+                                            <td>0.177% - 0.354%</td>
+                                            <td><strong>2.496%</strong></td>
+                                            <td>01/01/2024 - ∞</td>
+                                            <td><span class="badge badge-success">Ativa</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>VTI_100</strong></td>
+                                            <td><span class="badge badge-primary">Interno</span></td>
+                                            <td>TODOS</td>
+                                            <td>BASESTD</td>
+                                            <td>17.7% - 17.877%</td>
+                                            <td><strong>2.1%</strong></td>
+                                            <td>01/01/2024 - ∞</td>
+                                            <td><span class="badge badge-success">Ativa</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" style="text-align: center; color: var(--ksi-gray-medium);">
+                                                ... mais 564 níveis VTI/VTE configurados ...
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Gráfico VTI/VTE -->
+                            <div style="margin-top: 32px;">
+                                <h3 style="margin-bottom: 20px;">Curva de Comissão VTI/VTE</h3>
+                                <div style="height: 300px; position: relative;">
+                                    <canvas id="vtiChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Comissão por Pedido Section -->
+                <section id="commission-orderSection" class="content-section">
+                    <div class="page-header">
+                        <h1 class="page-title">Comissão por Pedido</h1>
+                        <p class="page-subtitle">Detalhamento completo de comissões por pedido com parcelas</p>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <span class="alert-icon">ℹ️</span>
+                        <div class="alert-content">
+                            <h4>Visualização Hierárquica</h4>
+                            <p>Clique nos pedidos para expandir e ver detalhes de parcelas, vendedor e gerente.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <span>📦</span> Pedidos com Comissões Detalhadas
+                            </h2>
+                            <div class="card-actions">
+                                <button class="btn btn-success btn-sm">
+                                    Exportar Excel
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="tree-view">
+                                <!-- Pedido 1 -->
+                                <div class="tree-node">
+                                    <div class="tree-item" onclick="toggleTree(this)">
+                                        <span class="tree-toggle">▶</span>
+                                        <span class="tree-label">PED-2024-0145 - Construtora ABC</span>
+                                        <span class="tree-value">R$ 450.000,00</span>
+                                        <span class="tree-status">
+                                            <span class="badge badge-success">Ativo</span>
+                                        </span>
+                                    </div>
+                                    <div class="tree-children">
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">👤 Vendedor: João Silva</span>
+                                            <span class="tree-child-value">R$ 8.100,00</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">👔 Gerente: Carlos Mendes</span>
+                                            <span class="tree-child-value">R$ 2.250,00</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">📊 Comissão Total</span>
+                                            <span class="tree-child-value">R$ 10.350,00</span>
+                                        </div>
+                                        
+                                        <div class="tree-node" style="margin-top: 16px;">
+                                            <div class="tree-item" onclick="toggleTree(this)">
+                                                <span class="tree-toggle">▶</span>
+                                                <span class="tree-label">💳 Parcelas (6x)</span>
+                                                <span class="tree-value">R$ 75.000,00/mês</span>
+                                            </div>
+                                            <div class="tree-children">
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">Parcela 1/6 - Jan/24</span>
+                                                    <span class="tree-child-value">R$ 1.725,00</span>
+                                                    <span class="badge badge-success">Paga</span>
+                                                </div>
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">Parcela 2/6 - Fev/24</span>
+                                                    <span class="tree-child-value">R$ 1.725,00</span>
+                                                    <span class="badge badge-success">Paga</span>
+                                                </div>
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">Parcela 3/6 - Mar/24</span>
+                                                    <span class="tree-child-value">R$ 1.725,00</span>
+                                                    <span class="badge badge-warning">A Vencer</span>
+                                                </div>
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">Parcela 4/6 - Abr/24</span>
+                                                    <span class="tree-child-value">R$ 1.725,00</span>
+                                                    <span class="badge badge-warning">A Vencer</span>
+                                                </div>
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">Parcela 5/6 - Mai/24</span>
+                                                    <span class="tree-child-value">R$ 1.725,00</span>
+                                                    <span class="badge badge-warning">A Vencer</span>
+                                                </div>
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">Parcela 6/6 - Jun/24</span>
+                                                    <span class="tree-child-value">R$ 1.725,00</span>
+                                                    <span class="badge badge-warning">A Vencer</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Pedido 2 -->
+                                <div class="tree-node">
+                                    <div class="tree-item" onclick="toggleTree(this)">
+                                        <span class="tree-toggle">▶</span>
+                                        <span class="tree-label">PED-2024-0132 - Indústria XYZ</span>
+                                        <span class="tree-value">R$ 285.000,00</span>
+                                        <span class="tree-status">
+                                            <span class="badge badge-success">Ativo</span>
+                                        </span>
+                                    </div>
+                                    <div class="tree-children">
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">👤 Vendedor: Maria Santos</span>
+                                            <span class="tree-child-value">R$ 4.275,00</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">👔 Gerente: Ana Paula</span>
+                                            <span class="tree-child-value">R$ 1.425,00</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">📊 Comissão Total</span>
+                                            <span class="tree-child-value">R$ 5.700,00</span>
+                                        </div>
+                                        
+                                        <div class="tree-node" style="margin-top: 16px;">
+                                            <div class="tree-item" onclick="toggleTree(this)">
+                                                <span class="tree-toggle">▶</span>
+                                                <span class="tree-label">💳 Parcelas (12x)</span>
+                                                <span class="tree-value">R$ 23.750,00/mês</span>
+                                            </div>
+                                            <div class="tree-children">
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">Parcela 1/12 - Jan/24</span>
+                                                    <span class="tree-child-value">R$ 475,00</span>
+                                                    <span class="badge badge-success">Paga</span>
+                                                </div>
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">Parcela 2/12 - Fev/24</span>
+                                                    <span class="tree-child-value">R$ 475,00</span>
+                                                    <span class="badge badge-warning">A Vencer</span>
+                                                </div>
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">...</span>
+                                                    <span class="tree-child-value">10 parcelas restantes</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Pedido 3 -->
+                                <div class="tree-node">
+                                    <div class="tree-item" onclick="toggleTree(this)">
+                                        <span class="tree-toggle">▶</span>
+                                        <span class="tree-label">PED-2024-0128 - Frigorífico Sul</span>
+                                        <span class="tree-value">R$ 680.000,00</span>
+                                        <span class="tree-status">
+                                            <span class="badge badge-success">Ativo</span>
+                                        </span>
+                                    </div>
+                                    <div class="tree-children">
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">👤 Vendedor: Pedro Costa</span>
+                                            <span class="tree-child-value">R$ 12.240,00</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">👔 Gerente: Paulo Ricardo</span>
+                                            <span class="tree-child-value">R$ 3.400,00</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">📊 Comissão Total</span>
+                                            <span class="tree-child-value">R$ 15.640,00</span>
+                                        </div>
+                                        
+                                        <div class="tree-node" style="margin-top: 16px;">
+                                            <div class="tree-item" onclick="toggleTree(this)">
+                                                <span class="tree-toggle">▶</span>
+                                                <span class="tree-label">💳 Parcelas (3x)</span>
+                                                <span class="tree-value">R$ 226.666,67/mês</span>
+                                            </div>
+                                            <div class="tree-children">
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">Parcela 1/3 - Jan/24</span>
+                                                    <span class="tree-child-value">R$ 5.213,33</span>
+                                                    <span class="badge badge-warning">A Vencer</span>
+                                                </div>
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">Parcela 2/3 - Fev/24</span>
+                                                    <span class="tree-child-value">R$ 5.213,33</span>
+                                                    <span class="badge badge-warning">A Vencer</span>
+                                                </div>
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">Parcela 3/3 - Mar/24</span>
+                                                    <span class="tree-child-value">R$ 5.213,34</span>
+                                                    <span class="badge badge-warning">A Vencer</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resumo Consolidado -->
+                    <div class="commission-detail-card">
+                        <div class="commission-detail-header">
+                            <div class="commission-detail-title">Resumo Consolidado - Comissões por Pedido</div>
+                            <div class="commission-detail-value">R$ 31.690,00</div>
+                        </div>
+                        <div class="commission-detail-grid">
+                            <div class="commission-detail-item">
+                                <span class="commission-detail-label">Total Pedidos</span>
+                                <span class="commission-detail-data">3</span>
+                            </div>
+                            <div class="commission-detail-item">
+                                <span class="commission-detail-label">Volume Total</span>
+                                <span class="commission-detail-data">R$ 1.415.000</span>
+                            </div>
+                            <div class="commission-detail-item">
+                                <span class="commission-detail-label">Parcelas Pagas</span>
+                                <span class="commission-detail-data">3 de 21</span>
+                            </div>
+                            <div class="commission-detail-item">
+                                <span class="commission-detail-label">Liquidado</span>
+                                <span class="commission-detail-data">R$ 3.925,00</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Comissão por Vendedor Section -->
+                <section id="commission-vendorSection" class="content-section">
+                    <div class="page-header">
+                        <h1 class="page-title">Comissão por Vendedor</h1>
+                        <p class="page-subtitle">Análise detalhada de todos os pedidos realizados por vendedor</p>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Vendedores Ativos</div>
+                        </div>
+                        <div class="stat-card success">
+                            <div class="stat-icon">🏆</div>
+                            <div class="stat-value">João Silva</div>
+                            <div class="stat-label">Top Vendedor</div>
+                        </div>
+                        <div class="stat-card warning">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-value">R$ 20.657</div>
+                            <div class="stat-label">Média por Vendedor</div>
+                        </div>
+                        <div class="stat-card info">
+                            <div class="stat-icon">💼</div>
+                            <div class="stat-value">45</div>
+                            <div class="stat-label">Total de Pedidos</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <span>👤</span> Detalhamento por Vendedor
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="tree-view">
+                                <!-- Vendedor 1 -->
+                                <div class="tree-node">
+                                    <div class="tree-item" onclick="toggleTree(this)">
+                                        <span class="tree-toggle">▶</span>
+                                        <span class="tree-label">João Silva - Vendedor Interno (Regional Sul)</span>
+                                        <span class="tree-value">R$ 45.820,00</span>
+                                        <span class="tree-status">
+                                            <span class="badge badge-success">15 Pedidos</span>
+                                        </span>
+                                    </div>
+                                    <div class="tree-children">
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">📊 Total em Vendas</span>
+                                            <span class="tree-child-value">R$ 2.545.556,00</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">💰 Comissão Média</span>
+                                            <span class="tree-child-value">1.8%</span>
+                                        </div>
+                                        
+                                        <div class="tree-node" style="margin-top: 16px;">
+                                            <div class="tree-item" onclick="toggleTree(this)">
+                                                <span class="tree-toggle">▶</span>
+                                                <span class="tree-label">📦 Pedidos Realizados</span>
+                                                <span class="tree-value">15 pedidos</span>
+                                            </div>
+                                            <div class="tree-children">
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">PED-2024-0145 - Construtora ABC</span>
+                                                    <span class="tree-child-value">R$ 8.100,00</span>
+                                                    <span class="badge badge-success">6 parcelas</span>
+                                                </div>
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">PED-2024-0089 - Metalúrgica XYZ</span>
+                                                    <span class="tree-child-value">R$ 5.400,00</span>
+                                                    <span class="badge badge-success">3 parcelas</span>
+                                                </div>
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">PED-2024-0076 - Indústria Beta</span>
+                                                    <span class="tree-child-value">R$ 6.750,00</span>
+                                                    <span class="badge badge-warning">12 parcelas</span>
+                                                </div>
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">PED-2024-0054 - Supermercado Delta</span>
+                                                    <span class="tree-child-value">R$ 3.200,00</span>
+                                                    <span class="badge badge-success">À vista</span>
+                                                </div>
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">PED-2024-0032 - Hospital Regional</span>
+                                                    <span class="tree-child-value">R$ 4.800,00</span>
+                                                    <span class="badge badge-success">6 parcelas</span>
+                                                </div>
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">PED-2024-0021 - Shopping Center Norte</span>
+                                                    <span class="tree-child-value">R$ 7.250,00</span>
+                                                    <span class="badge badge-warning">12 parcelas</span>
+                                                </div>
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">PED-2024-0015 - Condomínio Residencial</span>
+                                                    <span class="tree-child-value">R$ 2.150,00</span>
+                                                    <span class="badge badge-success">3 parcelas</span>
+                                                </div>
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">... mais 7 pedidos</span>
+                                                    <span class="tree-child-value">R$ 8.170,00</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="tree-node" style="margin-top: 16px;">
+                                            <div class="tree-item" onclick="toggleTree(this)">
+                                                <span class="tree-toggle">▶</span>
+                                                <span class="tree-label">💳 Status das Parcelas</span>
+                                                <span class="tree-value">45 parcelas totais</span>
+                                            </div>
+                                            <div class="tree-children">
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">✅ Parcelas Liquidadas</span>
+                                                    <span class="tree-child-value">R$ 28.750,00</span>
+                                                    <span class="badge badge-success">28 parcelas</span>
+                                                </div>
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">⏳ A Receber</span>
+                                                    <span class="tree-child-value">R$ 17.070,00</span>
+                                                    <span class="badge badge-warning">17 parcelas</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Vendedor 2 -->
+                                <div class="tree-node">
+                                    <div class="tree-item" onclick="toggleTree(this)">
+                                        <span class="tree-toggle">▶</span>
+                                        <span class="tree-label">Maria Santos - Vendedor Externo (Regional Sul)</span>
+                                        <span class="tree-value">R$ 32.450,00</span>
+                                        <span class="tree-status">
+                                            <span class="badge badge-success">12 Pedidos</span>
+                                        </span>
+                                    </div>
+                                    <div class="tree-children">
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">📊 Total em Vendas</span>
+                                            <span class="tree-child-value">R$ 2.163.333,00</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">💰 Comissão Média</span>
+                                            <span class="tree-child-value">1.5%</span>
+                                        </div>
+                                        
+                                        <div class="tree-node" style="margin-top: 16px;">
+                                            <div class="tree-item" onclick="toggleTree(this)">
+                                                <span class="tree-toggle">▶</span>
+                                                <span class="tree-label">📦 Pedidos Realizados</span>
+                                                <span class="tree-value">12 pedidos</span>
+                                            </div>
+                                            <div class="tree-children">
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">PED-2024-0132 - Indústria XYZ</span>
+                                                    <span class="tree-child-value">R$ 4.275,00</span>
+                                                    <span class="badge badge-success">12 parcelas</span>
+                                                </div>
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">... mais 11 pedidos</span>
+                                                    <span class="tree-child-value">R$ 28.175,00</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Vendedor 3 -->
+                                <div class="tree-node">
+                                    <div class="tree-item" onclick="toggleTree(this)">
+                                        <span class="tree-toggle">▶</span>
+                                        <span class="tree-label">Pedro Costa - Vendedor Interno (Regional Norte)</span>
+                                        <span class="tree-value">R$ 38.920,00</span>
+                                        <span class="tree-status">
+                                            <span class="badge badge-success">10 Pedidos</span>
+                                        </span>
+                                    </div>
+                                    <div class="tree-children">
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">📊 Total em Vendas</span>
+                                            <span class="tree-child-value">R$ 1.946.000,00</span>
+                                        </div>
+                                        <div class="tree-child-item">
+                                            <span class="tree-child-label">💰 Comissão Média</span>
+                                            <span class="tree-child-value">2.0%</span>
+                                        </div>
+                                        
+                                        <div class="tree-node" style="margin-top: 16px;">
+                                            <div class="tree-item" onclick="toggleTree(this)">
+                                                <span class="tree-toggle">▶</span>
+                                                <span class="tree-label">📦 Principais Pedidos</span>
+                                                <span class="tree-value">10 pedidos</span>
+                                            </div>
+                                            <div class="tree-children">
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">PED-2024-0128 - Frigorífico Sul</span>
+                                                    <span class="tree-child-value">R$ 12.240,00</span>
+                                                    <span class="badge badge-success">3 parcelas</span>
+                                                </div>
+                                                <div class="tree-child-item">
+                                                    <span class="tree-child-label">... mais 9 pedidos</span>
+                                                    <span class="tree-child-value">R$ 26.680,00</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tabela Resumo -->
+                            <h3 style="margin-top: 32px; margin-bottom: 16px;">Resumo Consolidado por Vendedor</h3>
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Vendedor</th>
+                                            <th>Tipo</th>
+                                            <th>Regional</th>
+                                            <th>Pedidos</th>
+                                            <th>Volume Total</th>
+                                            <th>Comissão Total</th>
+                                            <th>Liquidado</th>
+                                            <th>A Receber</th>
+                                            <th>% Realizado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>João Silva</strong></td>
+                                            <td><span class="badge badge-primary">Interno</span></td>
+                                            <td>Sul</td>
+                                            <td>15</td>
+                                            <td>R$ 2.545.556,00</td>
+                                            <td><strong>R$ 45.820,00</strong></td>
+                                            <td>R$ 28.750,00</td>
+                                            <td>R$ 17.070,00</td>
+                                            <td>
+                                                <div class="progress" style="width: 100px;">
+                                                    <div class="progress-bar success" style="width: 62.7%">62.7%</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Maria Santos</strong></td>
+                                            <td><span class="badge badge-warning">Externo</span></td>
+                                            <td>Sul</td>
+                                            <td>12</td>
+                                            <td>R$ 2.163.333,00</td>
+                                            <td><strong>R$ 32.450,00</strong></td>
+                                            <td>R$ 19.470,00</td>
+                                            <td>R$ 12.980,00</td>
+                                            <td>
+                                                <div class="progress" style="width: 100px;">
+                                                    <div class="progress-bar success" style="width: 60%">60%</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Pedro Costa</strong></td>
+                                            <td><span class="badge badge-primary">Interno</span></td>
+                                            <td>Norte</td>
+                                            <td>10</td>
+                                            <td>R$ 1.946.000,00</td>
+                                            <td><strong>R$ 38.920,00</strong></td>
+                                            <td>R$ 15.568,00</td>
+                                            <td>R$ 23.352,00</td>
+                                            <td>
+                                                <div class="progress" style="width: 100px;">
+                                                    <div class="progress-bar warning" style="width: 40%">40%</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr style="background: var(--ksi-gray-bg); font-weight: bold;">
+                                            <td colspan="3"><strong>TOTAL GERAL</strong></td>
+                                            <td>37</td>
+                                            <td>R$ 6.654.889,00</td>
+                                            <td><strong>R$ 117.190,00</strong></td>
+                                            <td>R$ 63.788,00</td>
+                                            <td>R$ 53.402,00</td>
+                                            <td>
+                                                <div class="progress" style="width: 100px;">
+                                                    <div class="progress-bar success" style="width: 54.4%">54.4%</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Comissão por Parcela Section -->
+                <section id="commission-installmentSection" class="content-section">
+                    <div class="page-header">
+                        <h1 class="page-title">Comissão por Parcela</h1>
+                        <p class="page-subtitle">Controle detalhado de parcelas liquidadas, a receber e realizadas</p>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card success">
+                            <div class="stat-icon">✅</div>
+                            <div class="stat-value">R$ 185.430</div>
+                            <div class="stat-label">Parcelas Liquidadas</div>
+                            <div class="stat-change positive">
+                                <span>✓</span> 142 parcelas pagas
+                            </div>
+                        </div>
+                        <div class="stat-card warning">
+                            <div class="stat-icon">⏳</div>
+                            <div class="stat-value">R$ 62.420</div>
+                            <div class="stat-label">A Receber</div>
+                            <div class="stat-change">
+                                <span>•</span> 48 parcelas pendentes
+                            </div>
+                        </div>
+                        <div class="stat-card info">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-value">R$ 247.850</div>
+                            <div class="stat-label">Total Realizado</div>
+                            <div class="stat-change positive">
+                                <span>↑</span> 190 parcelas totais
+                            </div>
+                        </div>
+                        <div class="stat-card danger">
+                            <div class="stat-icon">🔴</div>
+                            <div class="stat-value">R$ 8.540</div>
+                            <div class="stat-label">Parcelas Vencidas</div>
+                            <div class="stat-change negative">
+                                <span>!</span> 5 parcelas atrasadas
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <span>💳</span> Visão Mensal de Parcelas
+                            </h2>
+                            <div class="card-actions">
+                                <button class="btn btn-primary btn-sm">Filtrar</button>
+                                <button class="btn btn-success btn-sm">Exportar</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="tree-view">
+                                <!-- Janeiro 2024 -->
+                                <div class="tree-node">
+                                    <div class="tree-item" onclick="toggleTree(this)">
+                                        <span class="tree-toggle">▶</span>
+                                        <span class="tree-label">Janeiro/2024</span>
+                                        <span class="tree-value">R$ 45.680,00</span>
+                                        <span class="tree-status">
+                                            <span class="badge badge-success">85% Liquidado</span>
+                                        </span>
+                                    </div>
+                                    <div class="tree-children">
+                                        <div class="summary-grid">
+                                            <div class="summary-card success">
+                                                <div class="summary-title">Liquidado</div>
+                                                <div class="summary-value">R$ 38.828,00</div>
+                                                <div class="summary-subtitle">28 parcelas pagas</div>
+                                            </div>
+                                            <div class="summary-card warning">
+                                                <div class="summary-title">A Receber</div>
+                                                <div class="summary-value">R$ 6.852,00</div>
+                                                <div class="summary-subtitle">5 parcelas pendentes</div>
+                                            </div>
+                                            <div class="summary-card">
+                                                <div class="summary-title">Total do Mês</div>
+                                                <div class="summary-value">R$ 45.680,00</div>
+                                                <div class="summary-subtitle">33 parcelas</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <table class="installments-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Data Venc.</th>
+                                                    <th>Pedido</th>
+                                                    <th>Cliente</th>
+                                                    <th>Parcela</th>
+                                                    <th>Valor</th>
+                                                    <th>Status</th>
+                                                    <th>Data Pgto</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>05/01/2024</td>
+                                                    <td>PED-2024-0145</td>
+                                                    <td>Construtora ABC</td>
+                                                    <td>1/6</td>
+                                                    <td><strong>R$ 1.725,00</strong></td>
+                                                    <td>
+                                                        <div class="installment-status">
+                                                            <span class="status-indicator paid"></span>
+                                                            <span class="badge badge-success">Pago</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>05/01/2024</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>10/01/2024</td>
+                                                    <td>PED-2024-0132</td>
+                                                    <td>Indústria XYZ</td>
+                                                    <td>1/12</td>
+                                                    <td><strong>R$ 475,00</strong></td>
+                                                    <td>
+                                                        <div class="installment-status">
+                                                            <span class="status-indicator paid"></span>
+                                                            <span class="badge badge-success">Pago</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>10/01/2024</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>15/01/2024</td>
+                                                    <td>PED-2024-0128</td>
+                                                    <td>Frigorífico Sul</td>
+                                                    <td>1/3</td>
+                                                    <td><strong>R$ 5.213,33</strong></td>
+                                                    <td>
+                                                        <div class="installment-status">
+                                                            <span class="status-indicator pending"></span>
+                                                            <span class="badge badge-warning">Pendente</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>-</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Fevereiro 2024 -->
+                                <div class="tree-node">
+                                    <div class="tree-item" onclick="toggleTree(this)">
+                                        <span class="tree-toggle">▶</span>
+                                        <span class="tree-label">Fevereiro/2024</span>
+                                        <span class="tree-value">R$ 52.340,00</span>
+                                        <span class="tree-status">
+                                            <span class="badge badge-warning">45% Liquidado</span>
+                                        </span>
+                                    </div>
+                                    <div class="tree-children">
+                                        <div class="summary-grid">
+                                            <div class="summary-card success">
+                                                <div class="summary-title">Liquidado</div>
+                                                <div class="summary-value">R$ 23.553,00</div>
+                                                <div class="summary-subtitle">15 parcelas pagas</div>
+                                            </div>
+                                            <div class="summary-card warning">
+                                                <div class="summary-title">A Receber</div>
+                                                <div class="summary-value">R$ 28.787,00</div>
+                                                <div class="summary-subtitle">20 parcelas pendentes</div>
+                                            </div>
+                                            <div class="summary-card">
+                                                <div class="summary-title">Total do Mês</div>
+                                                <div class="summary-value">R$ 52.340,00</div>
+                                                <div class="summary-subtitle">35 parcelas</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Março 2024 -->
+                                <div class="tree-node">
+                                    <div class="tree-item" onclick="toggleTree(this)">
+                                        <span class="tree-toggle">▶</span>
+                                        <span class="tree-label">Março/2024</span>
+                                        <span class="tree-value">R$ 48.920,00</span>
+                                        <span class="tree-status">
+                                            <span class="badge badge-warning">0% Liquidado</span>
+                                        </span>
+                                    </div>
+                                    <div class="tree-children">
+                                        <div class="summary-grid">
+                                            <div class="summary-card warning">
+                                                <div class="summary-title">A Receber</div>
+                                                <div class="summary-value">R$ 48.920,00</div>
+                                                <div class="summary-subtitle">32 parcelas pendentes</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Gráfico de Evolução -->
+                            <div style="margin-top: 32px;">
+                                <h3 style="margin-bottom: 20px;">Evolução de Liquidação de Parcelas</h3>
+                                <div style="height: 300px; position: relative;">
+                                    <canvas id="installmentChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detalhamento por Status -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <span>📊</span> Análise Detalhada por Status
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Status</th>
+                                            <th>Quantidade</th>
+                                            <th>Valor Total</th>
+                                            <th>% do Total</th>
+                                            <th>Prazo Médio</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="badge badge-success">Liquidadas</span></td>
+                                            <td>142</td>
+                                            <td><strong>R$ 185.430,00</strong></td>
+                                            <td>
+                                                <div class="progress" style="width: 150px;">
+                                                    <div class="progress-bar success" style="width: 74.8%">74.8%</div>
+                                                </div>
+                                            </td>
+                                            <td>0 dias</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge badge-warning">A Vencer</span></td>
+                                            <td>43</td>
+                                            <td><strong>R$ 53.880,00</strong></td>
+                                            <td>
+                                                <div class="progress" style="width: 150px;">
+                                                    <div class="progress-bar warning" style="width: 21.7%">21.7%</div>
+                                                </div>
+                                            </td>
+                                            <td>45 dias</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge badge-danger">Vencidas</span></td>
+                                            <td>5</td>
+                                            <td><strong>R$ 8.540,00</strong></td>
+                                            <td>
+                                                <div class="progress" style="width: 150px;">
+                                                    <div class="progress-bar danger" style="width: 3.5%">3.5%</div>
+                                                </div>
+                                            </td>
+                                            <td>12 dias atraso</td>
+                                        </tr>
+                                        <tr style="background: var(--ksi-gray-bg); font-weight: bold;">
+                                            <td>TOTAL</td>
+                                            <td>190</td>
+                                            <td><strong>R$ 247.850,00</strong></td>
+                                            <td>
+                                                <div class="progress" style="width: 150px;">
+                                                    <div class="progress-bar" style="width: 100%">100%</div>
+                                                </div>
+                                            </td>
+                                            <td>-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script>
+        // ==================== SISTEMA COMPLETO KSI VENDAS ====================
+        
+        // Estado Global
+        const app = {
+            user: null,
+            currentSection: 'dashboard',
+            data: {
+                orders: [],
+                vendors: [],
+                installments: [],
+                campaigns: [],
+                rules: [],
+                discountLimits: {
+                    internal: { PAINEL: 15, TELHA: 12, PORTA: 20, default: 15 },
+                    external: { PAINEL: 10, TELHA: 8, PORTA: 15, default: 10 }
+                }
+            }
+        };
+
+        // ==================== INICIALIZAÇÃO ====================
+        
+        function initializeApp() {
+            setupMockData();
+            setupCampaigns();
+            initCharts();
+        }
+
+        function setupMockData() {
+            // Dados mockados detalhados
+            app.data.orders = [
+                {
+                    id: 'PED-2024-0145',
+                    client: 'Construtora ABC',
+                    vendor: 'João Silva',
+                    value: 450000,
+                    commission: 8100,
+                    managerCommission: 2250,
+                    installments: 6,
+                    paidInstallments: 2,
+                    status: 'active'
+                },
+                {
+                    id: 'PED-2024-0132',
+                    client: 'Indústria XYZ',
+                    vendor: 'Maria Santos',
+                    value: 285000,
+                    commission: 4275,
+                    managerCommission: 1425,
+                    installments: 12,
+                    paidInstallments: 1,
+                    status: 'active'
+                },
+                {
+                    id: 'PED-2024-0128',
+                    client: 'Frigorífico Sul',
+                    vendor: 'Pedro Costa',
+                    value: 680000,
+                    commission: 12240,
+                    managerCommission: 3400,
+                    installments: 3,
+                    paidInstallments: 0,
+                    status: 'active'
+                },
+                {
+                    id: 'PED-2024-0089',
+                    client: 'Metalúrgica XYZ',
+                    vendor: 'João Silva',
+                    value: 300000,
+                    commission: 5400,
+                    managerCommission: 1500,
+                    installments: 3,
+                    paidInstallments: 3,
+                    status: 'completed'
+                },
+                {
+                    id: 'PED-2024-0076',
+                    client: 'Indústria Beta',
+                    vendor: 'João Silva',
+                    value: 375000,
+                    commission: 6750,
+                    managerCommission: 1875,
+                    installments: 12,
+                    paidInstallments: 4,
+                    status: 'active'
+                },
+                {
+                    id: 'PED-2024-0054',
+                    client: 'Supermercado Delta',
+                    vendor: 'João Silva',
+                    value: 177780,
+                    commission: 3200,
+                    managerCommission: 889,
+                    installments: 1,
+                    paidInstallments: 1,
+                    status: 'completed'
+                },
+                {
+                    id: 'PED-2024-0032',
+                    client: 'Hospital Regional',
+                    vendor: 'João Silva',
+                    value: 266670,
+                    commission: 4800,
+                    managerCommission: 1333,
+                    installments: 6,
+                    paidInstallments: 6,
+                    status: 'completed'
+                },
+                {
+                    id: 'PED-2024-0021',
+                    client: 'Shopping Center Norte',
+                    vendor: 'João Silva',
+                    value: 402780,
+                    commission: 7250,
+                    managerCommission: 2014,
+                    installments: 12,
+                    paidInstallments: 8,
+                    status: 'active'
+                },
+                {
+                    id: 'PED-2024-0015',
+                    client: 'Condomínio Residencial',
+                    vendor: 'João Silva',
+                    value: 119440,
+                    commission: 2150,
+                    managerCommission: 597,
+                    installments: 3,
+                    paidInstallments: 3,
+                    status: 'completed'
+                }
+            ];
+
+            app.data.vendors = [
+                {
+                    name: 'João Silva',
+                    type: 'internal',
+                    regional: 'Sul',
+                    totalOrders: 15,
+                    totalSales: 2545556,
+                    totalCommission: 45820,
+                    liquidated: 28750,
+                    pending: 17070
+                },
+                {
+                    name: 'Maria Santos',
+                    type: 'external',
+                    regional: 'Sul',
+                    totalOrders: 12,
+                    totalSales: 2163333,
+                    totalCommission: 32450,
+                    liquidated: 19470,
+                    pending: 12980
+                },
+                {
+                    name: 'Pedro Costa',
+                    type: 'internal',
+                    regional: 'Norte',
+                    totalOrders: 10,
+                    totalSales: 1946000,
+                    totalCommission: 38920,
+                    liquidated: 15568,
+                    pending: 23352
+                }
+            ];
+
+            app.data.campaigns = [
+                { id: 'BF2024', name: 'Black Friday 2024', products: ['PAINEL', 'TELHA'], bonus: 2.5, start: '2024-11-01', end: '2024-11-30' },
+                { id: 'Q42024', name: 'Campanha Q4 2024', products: ['TODOS'], bonus: 1.0, start: '2024-10-01', end: '2024-12-31' },
+                { id: 'NATAL24', name: 'Natal 2024', products: ['PORTA', 'ACESSORIO'], bonus: 1.5, start: '2024-12-01', end: '2024-12-31' },
+                { id: 'VERAO24', name: 'Liquidação Verão', products: ['ISOLAMENTO'], bonus: 0.75, start: '2024-01-01', end: '2024-02-28' },
+                { id: 'ANIV24', name: 'Aniversário KSI', products: ['TODOS'], bonus: 2.0, start: '2024-03-15', end: '2024-03-31' }
+            ];
+        }
+
+        function setupCampaigns() {
+            const campaignSelect = document.getElementById('simCampaign');
+            if (!campaignSelect) return;
+            
+            campaignSelect.innerHTML = '<option value="">Nenhuma campanha</option>';
+            app.data.campaigns.forEach(campaign => {
+                campaignSelect.innerHTML += `<option value="${campaign.id}">${campaign.name} (+${campaign.bonus}%)</option>`;
+            });
+        }
+
+        // ==================== LOGIN ====================
+        
+        function handleLogin(event) {
+            event.preventDefault();
+            showLoading();
+            
+            setTimeout(() => {
+                const role = document.getElementById('userRole').value;
+                const userName = role === 'admin' ? 'Tiago Da Silva' : 
+                               role === 'manager' ? 'Carlos Mendes' : 'João Silva';
+                const initials = userName.split(' ').map(n => n[0]).join('');
+                
+                app.user = {
+                    name: userName,
+                    role: role,
+                    initials: initials
+                };
+                
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('appWrapper').classList.add('active');
+                document.getElementById('userName').textContent = userName;
+                document.getElementById('userAvatar').textContent = initials;
+                
+                hideLoading();
+                showToast('Login realizado com sucesso!', 'success');
+            }, 1000);
+        }
+
+        // ==================== SIMULADOR ====================
+        
+        function loadBestCampaign() {
+            const productFamily = document.getElementById('simProductFamily').value;
+            if (!productFamily) return;
+            
+            // Encontrar melhor campanha para o produto
+            const applicableCampaigns = app.data.campaigns.filter(c => 
+                c.products.includes('TODOS') || c.products.includes(productFamily)
+            );
+            
+            if (applicableCampaigns.length > 0) {
+                // Selecionar campanha com maior bônus
+                const bestCampaign = applicableCampaigns.reduce((prev, current) => 
+                    prev.bonus > current.bonus ? prev : current
+                );
+                
+                document.getElementById('simCampaign').value = bestCampaign.id;
+                document.getElementById('campaignInfo').style.display = 'block';
+                showToast(`Campanha "${bestCampaign.name}" selecionada (+${bestCampaign.bonus}%)`, 'success');
+            }
+            
+            updateSimulation();
+        }
+
+        function updateSimulation() {
+            const vendorType = document.getElementById('simVendorType').value;
+            const productFamily = document.getElementById('simProductFamily').value;
+            const orderValue = parseFloat(document.getElementById('simOrderValue').value) || 0;
+            const discount = parseFloat(document.getElementById('simDiscount').value) || 0;
+            const installments = parseInt(document.getElementById('simInstallments').value) || 1;
+            const campaignId = document.getElementById('simCampaign').value;
+            
+            if (orderValue === 0) return;
+            
+            // Comissão base
+            let baseCommission = vendorType === 'internal' ? 2.5 : 1.5;
+            
+            // Bônus de campanha
+            let campaignBonus = 0;
+            if (campaignId) {
+                const campaign = app.data.campaigns.find(c => c.id === campaignId);
+                if (campaign) campaignBonus = campaign.bonus;
+            }
+            
+            // Verificar limite de desconto
+            const discountLimit = app.data.discountLimits[vendorType][productFamily] || 
+                                 app.data.discountLimits[vendorType].default;
+            
+            let discountPenalty = 0;
+            if (discount > discountLimit) {
+                discountPenalty = discount - discountLimit;
+                document.getElementById('discountWarningBox').style.display = 'block';
+                document.getElementById('discountWarningText').textContent = 
+                    `Desconto de ${discount}% excede o limite de ${discountLimit}%. ` +
+                    `Penalidade de ${discountPenalty.toFixed(2)}% será aplicada na comissão!`;
+            } else {
+                document.getElementById('discountWarningBox').style.display = 'none';
+            }
+            
+            // Calcular comissão final
+            const finalCommission = Math.max(0.1, baseCommission + campaignBonus - discountPenalty);
+            const vendorCommission = orderValue * (finalCommission / 100);
+            const managerCommission = orderValue * 0.5 / 100;
+            const installmentValue = vendorCommission / installments;
+            
+            // Atualizar interface
+            document.getElementById('simBaseCommission').textContent = baseCommission.toFixed(2) + '%';
+            document.getElementById('simCampaignBonus').textContent = '+' + campaignBonus.toFixed(2) + '%';
+            document.getElementById('simDiscountPenalty').textContent = '-' + discountPenalty.toFixed(2) + '%';
+            document.getElementById('simFinalCommission').textContent = finalCommission.toFixed(2) + '%';
+            document.getElementById('simTotalCommission').textContent = 'R$ ' + vendorCommission.toFixed(2);
+            document.getElementById('simVendorCommission').textContent = 'R$ ' + vendorCommission.toFixed(2);
+            document.getElementById('simManagerCommission').textContent = 'R$ ' + managerCommission.toFixed(2);
+            document.getElementById('simInstallmentValue').textContent = 'R$ ' + installmentValue.toFixed(2);
+            document.getElementById('simInstallmentInfo').textContent = installments + 'x de R$ ' + installmentValue.toFixed(2);
+        }
+
+        function simulateCommission(event) {
+            event.preventDefault();
+            
+            const orderValue = parseFloat(document.getElementById('simOrderValue').value) || 0;
+            if (orderValue === 0) {
+                showToast('Por favor, insira o valor do pedido', 'error');
+                return;
+            }
+            
+            updateSimulation();
+            document.getElementById('simulationResult').style.display = 'block';
+            showToast('Simulação calculada com sucesso!', 'success');
+        }
+
+        // ==================== NAVIGATION ====================
+        
+        function navigate(section) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(s => {
+                s.classList.remove('active');
+            });
+            
+            // Show selected section
+            const sectionEl = document.getElementById(section + 'Section');
+            if (sectionEl) {
+                sectionEl.classList.add('active');
+            }
+            
+            // Update navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Mark as active
+            if (event && event.target) {
+                const element = event.target.closest('.nav-link, .sidebar-link');
+                if (element) {
+                    element.classList.add('active');
+                }
+            }
+            
+            app.currentSection = section;
+            
+            // Initialize charts if needed
+            if (section === 'commission-installment' && typeof Chart !== 'undefined') {
+                setTimeout(initInstallmentChart, 100);
+            } else if (section === 'rules' && typeof Chart !== 'undefined') {
+                setTimeout(initVTIChart, 100);
+            }
+        }
+
+        function toggleTree(element) {
+            const toggle = element.querySelector('.tree-toggle');
+            const children = element.nextElementSibling;
+            
+            if (children && children.classList.contains('tree-children')) {
+                toggle.classList.toggle('expanded');
+                children.classList.toggle('expanded');
+                
+                if (toggle.classList.contains('expanded')) {
+                    toggle.textContent = '▼';
+                } else {
+                    toggle.textContent = '▶';
+                }
+            }
+        }
+
+        // ==================== CHARTS ====================
+        
+        function initCharts() {
+            // Initialize charts when Chart.js is available
+            if (typeof Chart !== 'undefined') {
+                // Chart defaults
+                Chart.defaults.font.family = "'Roboto', 'Open Sans', sans-serif";
+                Chart.defaults.font.size = 12;
+            }
+        }
+
+        function initInstallmentChart() {
+            const ctx = document.getElementById('installmentChart');
+            if (!ctx || !window.Chart) return;
+            
+            // Destroy existing chart if it exists
+            if (ctx.chart) {
+                ctx.chart.destroy();
+            }
+            
+            ctx.chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan/24', 'Fev/24', 'Mar/24', 'Abr/24', 'Mai/24', 'Jun/24'],
+                    datasets: [
+                        {
+                            label: 'Liquidado',
+                            data: [38828, 23553, 0, 0, 0, 0],
+                            backgroundColor: '#4CAF50'
+                        },
+                        {
+                            label: 'A Receber',
+                            data: [6852, 28787, 48920, 42350, 38450, 32140],
+                            backgroundColor: '#FF9800'
+                        },
+                        {
+                            label: 'Vencido',
+                            data: [0, 0, 0, 0, 0, 0],
+                            backgroundColor: '#E31E24'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true
+                        },
+                        y: {
+                            stacked: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'R$ ' + value.toLocaleString('pt-BR');
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': R$ ' + 
+                                           context.parsed.y.toLocaleString('pt-BR');
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initVTIChart() {
+            const ctx = document.getElementById('vtiChart');
+            if (!ctx || !window.Chart) return;
+            
+            // Destroy existing chart if it exists
+            if (ctx.chart) {
+                ctx.chart.destroy();
+            }
+            
+            // Gerar dados da curva VTI/VTE
+            const vtiData = [];
+            for (let i = 0; i <= 100; i += 5) {
+                const commission = Math.max(0.1, 2.5 - (i * 0.02));
+                vtiData.push({ x: i, y: commission });
+            }
+            
+            ctx.chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: 'Comissão (%)',
+                        data: vtiData,
+                        borderColor: '#004B87',
+                        backgroundColor: 'rgba(0, 75, 135, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            title: {
+                                display: true,
+                                text: 'Desconto (%)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Comissão (%)'
+                            },
+                            min: 0,
+                            max: 3
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Desconto: ${context.parsed.x}% → Comissão: ${context.parsed.y.toFixed(2)}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ==================== UTILITIES ====================
+        
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        function logout() {
+            app.user = null;
+            location.reload();
+        }
+
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type} show`;
+            toast.innerHTML = `
+                <span class="toast-icon">${type === 'success' ? '✅' : type === 'error' ? '❌' : type === 'warning' ? '⚠️' : 'ℹ️'}</span>
+                <span class="toast-message">${message}</span>
+            `;
+            
+            document.getElementById('toastContainer').appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // ==================== EVENT LISTENERS ====================
+        
+        window.addEventListener('load', function() {
+            initializeApp();
+            
+            // Close dropdown on outside click
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.header-user')) {
+                    document.getElementById('userDropdown').classList.remove('active');
+                }
+            });
+        });
+
+        // Prevent form submission on Enter key in inputs
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+                e.preventDefault();
+            }
+        });
+   // Dados adicionais - corrigido
+        if (app && app.data) {
+            app.data.orders = app.data.orders || [];
+            app.data.orders.push(
+                {
+                    id: 'PED-2024-0128',
+                    client: 'Frigorífico Sul',
+                    vendor: 'Pedro Costa',
+                    value: 680000,
+                    commission: 12240,
+                    managerCommission: 3400,
+                    installments: 3,
+                    paidInstallments: 0,
+                    status: 'active'
+                }
+            );
+
+            app.data.vendors = [
+                {
+                    name: 'João Silva',
+                    type: 'internal',
+                    regional: 'Sul',
+                    totalOrders: 15,
+                    totalSales: 2545556,
+                    totalCommission: 45820,
+                    liquidated: 28750,
+                    pending: 17070
+                },
+                {
+                    name: 'Maria Santos',
+                    type: 'external',
+                    regional: 'Sul',
+                    totalOrders: 12,
+                    totalSales: 2163333,
+                    totalCommission: 32450,
+                    liquidated: 19470,
+                    pending: 12980
+                },
+                {
+                    name: 'Pedro Costa',
+                    type: 'internal',
+                    regional: 'Norte',
+                    totalOrders: 10,
+                    totalSales: 1946000,
+                    totalCommission: 38920,
+                    liquidated: 15568,
+                    pending: 23352
+                }
+            ];
+        }
+
+        // ==================== LOGIN ====================
+        
+        function handleLogin(event) {
+            event.preventDefault();
+            showLoading();
+            
+            setTimeout(() => {
+                const role = document.getElementById('userRole').value;
+                const userName = role === 'admin' ? 'Tiago Da Silva' : 
+                               role === 'manager' ? 'Carlos Mendes' : 'João Silva';
+                const initials = userName.split(' ').map(n => n[0]).join('');
+                
+                app.user = {
+                    name: userName,
+                    role: role,
+                    initials: initials
+                };
+                
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('appWrapper').classList.add('active');
+                document.getElementById('userName').textContent = userName;
+                document.getElementById('userAvatar').textContent = initials;
+                
+                hideLoading();
+                showToast('Login realizado com sucesso!', 'success');
+            }, 1000);
+        }
+
+        // ==================== NAVIGATION ====================
+        
+        function navigate(section) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(s => {
+                s.classList.remove('active');
+            });
+            
+            // Show selected section
+            const sectionEl = document.getElementById(section + 'Section');
+            if (sectionEl) {
+                sectionEl.classList.add('active');
+            }
+            
+            // Update navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Mark as active
+            if (event && event.target) {
+                const element = event.target.closest('.nav-link, .sidebar-link');
+                if (element) {
+                    element.classList.add('active');
+                }
+            }
+            
+            app.currentSection = section;
+            
+            // Initialize charts if needed
+            if (section === 'commission-installment' && typeof Chart !== 'undefined') {
+                setTimeout(initInstallmentChart, 100);
+            }
+        }
+
+        function toggleTree(element) {
+            const toggle = element.querySelector('.tree-toggle');
+            const children = element.nextElementSibling;
+            
+            if (children && children.classList.contains('tree-children')) {
+                toggle.classList.toggle('expanded');
+                children.classList.toggle('expanded');
+                
+                if (toggle.classList.contains('expanded')) {
+                    toggle.textContent = '▼';
+                } else {
+                    toggle.textContent = '▶';
+                }
+            }
+        }
+
+        // ==================== CHARTS ====================
+        
+        function initCharts() {
+            // Initialize charts when Chart.js is available
+            if (typeof Chart !== 'undefined') {
+                // Chart defaults
+                Chart.defaults.font.family = "'Roboto', 'Open Sans', sans-serif";
+                Chart.defaults.font.size = 12;
+            }
+        }
+
+        function initInstallmentChart() {
+            const ctx = document.getElementById('installmentChart');
+            if (!ctx || !window.Chart) return;
+            
+            // Destroy existing chart if it exists
+            if (ctx.chart) {
+                ctx.chart.destroy();
+            }
+            
+            ctx.chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan/24', 'Fev/24', 'Mar/24', 'Abr/24', 'Mai/24', 'Jun/24'],
+                    datasets: [
+                        {
+                            label: 'Liquidado',
+                            data: [38828, 23553, 0, 0, 0, 0],
+                            backgroundColor: '#4CAF50'
+                        },
+                        {
+                            label: 'A Receber',
+                            data: [6852, 28787, 48920, 42350, 38450, 32140],
+                            backgroundColor: '#FF9800'
+                        },
+                        {
+                            label: 'Vencido',
+                            data: [0, 0, 0, 0, 0, 0],
+                            backgroundColor: '#E31E24'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true
+                        },
+                        y: {
+                            stacked: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'R$ ' + value.toLocaleString('pt-BR');
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': R$ ' + 
+                                           context.parsed.y.toLocaleString('pt-BR');
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ==================== UTILITIES ====================
+        
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        function logout() {
+            app.user = null;
+            location.reload();
+        }
+
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type} show`;
+            toast.innerHTML = `
+                <span class="toast-icon">${type === 'success' ? '✅' : type === 'error' ? '❌' : type === 'warning' ? '⚠️' : 'ℹ️'}</span>
+                <span class="toast-message">${message}</span>
+            `;
+            
+            document.getElementById('toastContainer').appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // ==================== EVENT LISTENERS ====================
+        
+        window.addEventListener('load', function() {
+            initializeApp();
+            
+            // Close dropdown on outside click
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.header-user')) {
+                    document.getElementById('userDropdown').classList.remove('active');
+                }
+            });
+        });
+
+        // Prevent form submission on Enter key in inputs
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+                e.preventDefault();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
+});
+    </script>
+</body>
+</html>
