@@ -1394,7 +1394,7 @@
             <div style="text-align: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid #E0E0E0;">
                 <small style="color: var(--ksi-gray-medium);">
                     Sistema v3.0 | © 2024 Kingspan Isoeste<br>
-                    <span style="color: var(--ksi-green);">✔</span> Sistema integrado com TOPIS/DYNASUL
+                    <span style="color: var(--ksi-green);">✔</span> Sistema integrado com Totvs/DataSul
                 </small>
             </div>
         </div>
@@ -1437,7 +1437,7 @@
                 
                 <div class="header-user" onclick="toggleUserMenu()">
                     <div class="user-avatar" id="userAvatar">CS</div>
-                    <span class="user-name" id="userName">Cicero Santos</span>
+                    <span class="user-name" id="userName">Tiago Silva</span>
                     <i class="fas fa-chevron-down"></i>
                     <div class="user-dropdown" id="userDropdown">
                         <div class="dropdown-item">
@@ -1829,7 +1829,7 @@
                                                 <span class="badge badge-warning">Natal</span>
                                             </td>
                                             <td>
-                                                Cicero Santos
+                                                Tiago Silva
                                                 <br>
                                                 <small class="text-muted">15/10/2024</small>
                                             </td>
@@ -2153,7 +2153,7 @@
                                             <td>
                                                 15/01/2024
                                                 <br>
-                                                <small class="text-muted">Cicero Santos</small>
+                                                <small class="text-muted">Tiago Silva</small>
                                             </td>
                                             <td>
                                                 <div class="table-actions">
@@ -3605,9 +3605,6 @@
                                 <i class="fas fa-plug"></i> Sistemas Integrados
                             </h2>
                             <div class="card-actions">
-                                <button class="btn btn-success" onclick="addIntegration()">
-                                    <i class="fas fa-plus"></i> Nova Integração
-                                </button>
                                 <button class="btn btn-primary btn-sm" onclick="syncAll()">
                                     <i class="fas fa-sync"></i> Sincronizar Tudo
                                 </button>
@@ -3622,7 +3619,7 @@
                                             <i class="fas fa-database"></i>
                                         </div>
                                         <div>
-                                            <h4 style="margin: 0;">TOPIS/DYNASUL</h4>
+                                            <h4 style="margin: 0;">Totvs/DataSul</h4>
                                             <small style="color: var(--ksi-gray-medium);">ERP Principal</small>
                                         </div>
                                         <span class="badge badge-success" style="margin-left: auto;">Ativo</span>
@@ -4322,7 +4319,7 @@
                     status: 'active',
                     goal: 5000000,
                     achieved: 3500000,
-                    createdBy: 'Cicero Santos',
+                    createdBy: 'Tiago Silva',
                     createdAt: '2024-10-15',
                     conditions: 'Aplicável para pedidos acima de R$ 50.000'
                 },
@@ -4404,7 +4401,7 @@
                     endDate: null,
                     status: 'active',
                     notes: 'Regra padrão para vendedores internos',
-                    createdBy: 'Cicero Santos',
+                    createdBy: 'Tiago Silva',
                     createdAt: '2024-01-15'
                 },
                 {
@@ -4524,7 +4521,7 @@
             
             setTimeout(() => {
                 const role = document.getElementById('userRole').value;
-                const userName = role === 'admin' ? 'Cicero Santos' : 
+                const userName = role === 'admin' ? 'Tiago Silva' : 
                                role === 'manager' ? 'Carlos Mendes' : 'João Silva';
                 const initials = userName.split(' ').map(n => n[0]).join('');
                 
@@ -4533,6 +4530,12 @@
                     role: role,
                     initials: initials
                 };
+
+                if(role != 'admin')
+                {
+                   window.location.href = 'comissao.html';
+                   return;
+                }
                 
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('appWrapper').classList.add('active');

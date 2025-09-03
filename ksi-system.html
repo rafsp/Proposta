@@ -1288,8 +1288,7 @@
             <div style="text-align: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid #E0E0E0;">
                 <small style="color: var(--ksi-gray-medium);">
                     Sistema v3.0 | © 2024 Kingspan Isoeste<br>
-                    <span style="color: var(--ksi-green);">✔</span> Sistema integrado com TOPIS/DYNASUL
-                </small>
+                    <span style="color: var(--ksi-green);">✔</span> Sistema integrado com Data Sul                </small>
             </div>
         </div>
     </div>
@@ -1668,6 +1667,162 @@
                     </div>
                 </section>
 
+                                <!-- Integrações Section -->
+                <section id="integrationsSection" class="content-section">
+                    <div class="page-header">
+                        <h1 class="page-title">Integrações</h1>
+                        <p class="page-subtitle">Gestão de integrações com sistemas externos</p>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card success">
+                            <div class="stat-icon"><i class="fas fa-link"></i></div>
+                            <div class="stat-value">4</div>
+                            <div class="stat-label">Integrações Ativas</div>
+                        </div>
+                        <div class="stat-card info">
+                            <div class="stat-icon"><i class="fas fa-sync"></i></div>
+                            <div class="stat-value">12.847</div>
+                            <div class="stat-label">Sincronizações Hoje</div>
+                        </div>
+                        <div class="stat-card warning">
+                            <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                            <div class="stat-value">2</div>
+                            <div class="stat-label">Erros</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                            <div class="stat-value">5 min</div>
+                            <div class="stat-label">Última Sync</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-plug"></i> Sistemas Integrados
+                            </h2>
+                            <div class="card-actions">
+
+                                <button class="btn btn-primary btn-sm" onclick="syncAll()">
+                                    <i class="fas fa-sync"></i> Sincronizar Tudo
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+                                <!-- TOPIS/DYNASUL -->
+                                <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px;">
+                                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                                        <div style="width: 48px; height: 48px; background: var(--ksi-blue-primary); color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-database"></i>
+                                        </div>
+                                        <div>
+                                            <h4 style="margin: 0;">Totvs/Data Sul</h4>
+                                            <small style="color: var(--ksi-gray-medium);">ERP Principal</small>
+                                        </div>
+                                        <span class="badge badge-success" style="margin-left: auto;">Ativo</span>
+                                    </div>
+                                    <div style="font-size: 13px; color: var(--ksi-gray-medium); margin-bottom: 16px;">
+                                        <div>Última sync: 29/01/2024 14:35</div>
+                                        <div>Registros: 12.450</div>
+                                        <div>Status: <span style="color: var(--ksi-green);">✓ Sincronizado</span></div>
+                                    </div>
+                                    <div style="display: flex; gap: 8px;">
+                                        <button class="btn btn-sm btn-primary" onclick="syncIntegration('topis')">
+                                            <i class="fas fa-sync"></i> Sincronizar
+                                        </button>
+                                        <button class="btn btn-sm btn-outline" onclick="configIntegration('topis')">
+                                            <i class="fas fa-cog"></i> Configurar
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- KSI/ADMS -->
+                                <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px;">
+                                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                                        <div style="width: 48px; height: 48px; background: var(--ksi-green); color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-server"></i>
+                                        </div>
+                                        <div>
+                                            <h4 style="margin: 0;">KSI/ADMS</h4>
+                                            <small style="color: var(--ksi-gray-medium);">Sistema Legado</small>
+                                        </div>
+                                        <span class="badge badge-success" style="margin-left: auto;">Ativo</span>
+                                    </div>
+                                    <div style="font-size: 13px; color: var(--ksi-gray-medium); margin-bottom: 16px;">
+                                        <div>Última sync: 29/01/2024 14:30</div>
+                                        <div>Registros: 8.320</div>
+                                        <div>Status: <span style="color: var(--ksi-green);">✓ Sincronizado</span></div>
+                                    </div>
+                                    <div style="display: flex; gap: 8px;">
+                                        <button class="btn btn-sm btn-primary" onclick="syncIntegration('ksi')">
+                                            <i class="fas fa-sync"></i> Sincronizar
+                                        </button>
+                                        <button class="btn btn-sm btn-outline" onclick="configIntegration('ksi')">
+                                            <i class="fas fa-cog"></i> Configurar
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Power BI -->
+                                <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px;">
+                                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                                        <div style="width: 48px; height: 48px; background: var(--ksi-orange); color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-chart-pie"></i>
+                                        </div>
+                                        <div>
+                                            <h4 style="margin: 0;">Power BI</h4>
+                                            <small style="color: var(--ksi-gray-medium);">Business Intelligence</small>
+                                        </div>
+                                        <span class="badge badge-success" style="margin-left: auto;">Ativo</span>
+                                    </div>
+                                    <div style="font-size: 13px; color: var(--ksi-gray-medium); margin-bottom: 16px;">
+                                        <div>Última sync: 29/01/2024 13:00</div>
+                                        <div>Dashboards: 15</div>
+                                        <div>Status: <span style="color: var(--ksi-green);">✓ Sincronizado</span></div>
+                                    </div>
+                                    <div style="display: flex; gap: 8px;">
+                                        <button class="btn btn-sm btn-primary" onclick="syncIntegration('powerbi')">
+                                            <i class="fas fa-sync"></i> Sincronizar
+                                        </button>
+                                        <button class="btn btn-sm btn-outline" onclick="configIntegration('powerbi')">
+                                            <i class="fas fa-cog"></i> Configurar
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Sistema Pagamento -->
+                                <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px;">
+                                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                                        <div style="width: 48px; height: 48px; background: var(--ksi-purple); color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-money-check-alt"></i>
+                                        </div>
+                                        <div>
+                                            <h4 style="margin: 0;">Sistema Pagamento</h4>
+                                            <small style="color: var(--ksi-gray-medium);">Folha de Pagamento</small>
+                                        </div>
+                                        <span class="badge badge-warning" style="margin-left: auto;">Erro</span>
+                                    </div>
+                                    <div style="font-size: 13px; color: var(--ksi-gray-medium); margin-bottom: 16px;">
+                                        <div>Última sync: 29/01/2024 10:15</div>
+                                        <div>Registros: 3.890</div>
+                                        <div>Status: <span style="color: var(--ksi-red);">✗ Erro na conexão</span></div>
+                                    </div>
+                                    <div style="display: flex; gap: 8px;">
+                                        <button class="btn btn-sm btn-danger" onclick="fixIntegration('payment')">
+                                            <i class="fas fa-tools"></i> Corrigir
+                                        </button>
+                                        <button class="btn btn-sm btn-outline" onclick="viewLogs('payment')">
+                                            <i class="fas fa-file-alt"></i> Ver Logs
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- Simulador Section -->
                 <section id="simulatorSection" class="content-section">
                     <div class="page-header">
@@ -1823,93 +1978,586 @@
                     </div>
                 </section>
 
-                <!-- Campanhas Section -->
+<!-- Campanhas Section - COMPLETO COM CRUD -->
                 <section id="campaignsSection" class="content-section">
                     <div class="page-header">
-                        <h1 class="page-title">Campanhas Ativas</h1>
-                        <p class="page-subtitle">Gestão de campanhas e sobreposições</p>
+                        <h1 class="page-title">Gestão de Campanhas</h1>
+                        <p class="page-subtitle">Criar, editar e gerenciar campanhas de comissão e bonificações</p>
                     </div>
                     
                     <div class="stats-grid">
                         <div class="stat-card success">
-                            <div class="stat-icon">🎯</div>
+                            <div class="stat-icon"><i class="fas fa-bullseye"></i></div>
                             <div class="stat-value">5</div>
                             <div class="stat-label">Campanhas Ativas</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-check"></i> Em vigência
+                            </div>
                         </div>
                         <div class="stat-card warning">
-                            <div class="stat-icon">⚠️</div>
+                            <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
                             <div class="stat-value">3</div>
                             <div class="stat-label">Sobreposições</div>
+                            <div class="stat-change negative">
+                                <i class="fas fa-warning"></i> Requer atenção
+                            </div>
                         </div>
                         <div class="stat-card info">
-                            <div class="stat-icon">💰</div>
+                            <div class="stat-icon"><i class="fas fa-percentage"></i></div>
                             <div class="stat-value">2.5%</div>
                             <div class="stat-label">Maior Bônus</div>
+                            <div class="stat-change">
+                                <i class="fas fa-trophy"></i> Black Friday
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                            <div class="stat-value">2</div>
+                            <div class="stat-label">Futuras</div>
+                            <div class="stat-change">
+                                <i class="fas fa-clock"></i> Aguardando início
+                            </div>
                         </div>
                     </div>
 
                     <div class="card">
                         <div class="card-header">
                             <h2 class="card-title">
-                                <span>🎯</span> Campanhas em Vigência
+                                <i class="fas fa-bullseye"></i> Campanhas de Comissão
                             </h2>
+                            <div class="card-actions">
+                                <button class="btn btn-success" onclick="openCampaignModal()">
+                                    <i class="fas fa-plus"></i> Nova Campanha
+                                </button>
+                                <button class="btn btn-primary btn-sm" onclick="exportCampaigns()">
+                                    <i class="fas fa-download"></i> Exportar
+                                </button>
+                            </div>
                         </div>
                         <div class="card-body">
+                            <!-- Controles de Busca e Filtro -->
+                            <div class="datatable-controls">
+                                <div class="datatable-search">
+                                    <input type="text" class="form-input" placeholder="Buscar campanhas..." id="campaignSearch">
+                                    <button class="btn btn-primary">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                                <div class="datatable-filters">
+                                    <select class="form-select" id="campaignStatusFilter">
+                                        <option value="">Todos os Status</option>
+                                        <option value="active">Ativas</option>
+                                        <option value="future">Futuras</option>
+                                        <option value="expired">Expiradas</option>
+                                    </select>
+                                    <select class="form-select" id="campaignProductFilter">
+                                        <option value="">Todos os Produtos</option>
+                                        <option value="PAINEL">PAINEL</option>
+                                        <option value="TELHA">TELHA</option>
+                                        <option value="PORTA">PORTA</option>
+                                        <option value="PERFIL">PERFIL</option>
+                                        <option value="ACESSORIO">ACESSÓRIO</option>
+                                        <option value="ISOLAMENTO">ISOLAMENTO</option>
+                                        <option value="TODOS">TODOS</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="table-container">
-                                <table class="table">
+                                <table class="table" id="campaignsTable">
                                     <thead>
                                         <tr>
+                                            <th>
+                                                <input type="checkbox" id="selectAllCampaigns">
+                                            </th>
+                                            <th>Código</th>
                                             <th>Campanha</th>
                                             <th>Produtos</th>
                                             <th>Bônus</th>
                                             <th>Vigência</th>
                                             <th>Status</th>
                                             <th>Sobreposições</th>
+                                            <th>Criado por</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="campaignsTableBody">
+                                        <tr>
+                                            <td><input type="checkbox" class="campaign-checkbox"></td>
+                                            <td><strong>BF2024</strong></td>
+                                            <td>
+                                                <strong>Black Friday 2024</strong>
+                                                <br>
+                                                <small class="text-muted">Campanha especial de fim de ano</small>
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-primary">PAINEL</span>
+                                                <span class="badge badge-primary">TELHA</span>
+                                            </td>
+                                            <td><span class="badge badge-success" style="font-size: 14px;">+2.5%</span></td>
+                                            <td>
+                                                01/11/2024 - 30/11/2024
+                                                <br>
+                                                <small class="text-muted">30 dias</small>
+                                            </td>
+                                            <td><span class="badge badge-success">Ativa</span></td>
+                                            <td>
+                                                <span class="badge badge-warning">Q4 2024</span>
+                                                <span class="badge badge-warning">Natal</span>
+                                            </td>
+                                            <td>
+                                                Cicero Santos
+                                                <br>
+                                                <small class="text-muted">15/10/2024</small>
+                                            </td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="btn btn-sm btn-outline" onclick="viewCampaign('BF2024')" title="Visualizar">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-warning" onclick="editCampaign('BF2024')" title="Editar">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-success" onclick="duplicateCampaign('BF2024')" title="Duplicar">
+                                                        <i class="fas fa-copy"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" onclick="deleteCampaign('BF2024')" title="Excluir">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" class="campaign-checkbox"></td>
+                                            <td><strong>Q42024</strong></td>
+                                            <td>
+                                                <strong>Campanha Q4 2024</strong>
+                                                <br>
+                                                <small class="text-muted">Meta trimestral</small>
+                                            </td>
+                                            <td><span class="badge badge-purple">TODOS</span></td>
+                                            <td><span class="badge badge-info" style="font-size: 14px;">+1.0%</span></td>
+                                            <td>
+                                                01/10/2024 - 31/12/2024
+                                                <br>
+                                                <small class="text-muted">92 dias</small>
+                                            </td>
+                                            <td><span class="badge badge-success">Ativa</span></td>
+                                            <td>
+                                                <span class="badge badge-warning">Black Friday</span>
+                                                <span class="badge badge-warning">Natal</span>
+                                            </td>
+                                            <td>
+                                                Maria Silva
+                                                <br>
+                                                <small class="text-muted">25/09/2024</small>
+                                            </td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="btn btn-sm btn-outline" onclick="viewCampaign('Q42024')" title="Visualizar">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-warning" onclick="editCampaign('Q42024')" title="Editar">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-success" onclick="duplicateCampaign('Q42024')" title="Duplicar">
+                                                        <i class="fas fa-copy"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" onclick="deleteCampaign('Q42024')" title="Excluir">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" class="campaign-checkbox"></td>
+                                            <td><strong>NATAL24</strong></td>
+                                            <td>
+                                                <strong>Natal 2024</strong>
+                                                <br>
+                                                <small class="text-muted">Bonificação especial</small>
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-primary">PORTA</span>
+                                                <span class="badge badge-primary">ACESSÓRIO</span>
+                                            </td>
+                                            <td><span class="badge badge-info" style="font-size: 14px;">+1.5%</span></td>
+                                            <td>
+                                                01/12/2024 - 31/12/2024
+                                                <br>
+                                                <small class="text-muted">31 dias</small>
+                                            </td>
+                                            <td><span class="badge badge-warning">Futura</span></td>
+                                            <td>
+                                                <span class="badge badge-warning">Q4 2024</span>
+                                            </td>
+                                            <td>
+                                                João Pedro
+                                                <br>
+                                                <small class="text-muted">01/11/2024</small>
+                                            </td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="btn btn-sm btn-outline" onclick="viewCampaign('NATAL24')" title="Visualizar">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-warning" onclick="editCampaign('NATAL24')" title="Editar">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-success" onclick="duplicateCampaign('NATAL24')" title="Duplicar">
+                                                        <i class="fas fa-copy"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" onclick="deleteCampaign('NATAL24')" title="Excluir">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Paginação -->
+                            <div class="datatable-pagination">
+                                <button class="pagination-btn" disabled>
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button class="pagination-btn active">1</button>
+                                <button class="pagination-btn">2</button>
+                                <button class="pagination-btn">3</button>
+                                <button class="pagination-btn">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card de Análise de Sobreposições -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-exclamation-triangle"></i> Análise de Sobreposições
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-warning">
+                                <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                                <div class="alert-content">
+                                    <h4>Atenção: 3 sobreposições detectadas</h4>
+                                    <p>Campanhas com períodos sobrepostos podem causar conflitos no cálculo de comissões. Revise as configurações para garantir a aplicação correta dos bônus.</p>
+                                </div>
+                            </div>
+
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Campanha 1</th>
+                                            <th>Campanha 2</th>
+                                            <th>Produtos Afetados</th>
+                                            <th>Período Sobreposto</th>
+                                            <th>Regra Aplicada</th>
+                                            <th>Ação</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td><strong>Black Friday 2024</strong></td>
-                                            <td>PAINEL, TELHA</td>
-                                            <td><span class="badge badge-success">+2.5%</span></td>
-                                            <td>01/11/2024 - 30/11/2024</td>
-                                            <td><span class="badge badge-success">Ativa</span></td>
-                                            <td><span class="badge badge-warning">Q4 2024, Natal</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Campanha Q4 2024</strong></td>
-                                            <td>TODOS</td>
-                                            <td><span class="badge badge-info">+1.0%</span></td>
-                                            <td>01/10/2024 - 31/12/2024</td>
-                                            <td><span class="badge badge-success">Ativa</span></td>
-                                            <td><span class="badge badge-warning">Black Friday, Natal</span></td>
+                                            <td><strong>Q4 2024</strong></td>
+                                            <td>
+                                                <span class="badge badge-primary">PAINEL</span>
+                                                <span class="badge badge-primary">TELHA</span>
+                                            </td>
+                                            <td>01/11 - 30/11/2024</td>
+                                            <td><span class="badge badge-success">Maior bônus (2.5%)</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary" onclick="resolveOverlap('BF2024', 'Q42024')">
+                                                    <i class="fas fa-tools"></i> Resolver
+                                                </button>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td><strong>Natal 2024</strong></td>
-                                            <td>PORTA, ACESSÓRIO</td>
-                                            <td><span class="badge badge-info">+1.5%</span></td>
-                                            <td>01/12/2024 - 31/12/2024</td>
-                                            <td><span class="badge badge-success">Ativa</span></td>
-                                            <td><span class="badge badge-warning">Q4 2024</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Liquidação Verão</strong></td>
-                                            <td>ISOLAMENTO</td>
-                                            <td><span class="badge badge-info">+0.75%</span></td>
-                                            <td>01/01/2024 - 28/02/2024</td>
-                                            <td><span class="badge badge-success">Ativa</span></td>
-                                            <td>-</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Aniversário KSI</strong></td>
-                                            <td>TODOS</td>
-                                            <td><span class="badge badge-success">+2.0%</span></td>
-                                            <td>15/03/2024 - 31/03/2024</td>
-                                            <td><span class="badge badge-warning">Futura</span></td>
-                                            <td>-</td>
+                                            <td><strong>Q4 2024</strong></td>
+                                            <td>
+                                                <span class="badge badge-primary">PORTA</span>
+                                                <span class="badge badge-primary">ACESSÓRIO</span>
+                                            </td>
+                                            <td>01/12 - 31/12/2024</td>
+                                            <td><span class="badge badge-success">Maior bônus (1.5%)</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary" onclick="resolveOverlap('NATAL24', 'Q42024')">
+                                                    <i class="fas fa-tools"></i> Resolver
+                                                </button>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Regras Section - COMPLETO COM CRUD -->
+                <section id="rulesSection" class="content-section">
+                    <div class="page-header">
+                        <h1 class="page-title">Gestão de Regras de Comissão</h1>
+                        <p class="page-subtitle">Configuração completa de regras, níveis VTI/VTE e descontos progressivos</p>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-list-check"></i></div>
+                            <div class="stat-value">568</div>
+                            <div class="stat-label">Total de Regras</div>
+                            <div class="stat-change">
+                                <i class="fas fa-database"></i> Ativas no sistema
+                            </div>
+                        </div>
+                        <div class="stat-card success">
+                            <div class="stat-icon"><i class="fas fa-layer-group"></i></div>
+                            <div class="stat-value">564</div>
+                            <div class="stat-label">Níveis VTI/VTE</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-check"></i> Configurados
+                            </div>
+                        </div>
+                        <div class="stat-card warning">
+                            <div class="stat-icon"><i class="fas fa-boxes"></i></div>
+                            <div class="stat-value">93</div>
+                            <div class="stat-label">Famílias de Produtos</div>
+                            <div class="stat-change">
+                                <i class="fas fa-tags"></i> Categorizadas
+                            </div>
+                        </div>
+                        <div class="stat-card info">
+                            <div class="stat-icon"><i class="fas fa-table"></i></div>
+                            <div class="stat-value">9</div>
+                            <div class="stat-label">Tabelas de Preço</div>
+                            <div class="stat-change">
+                                <i class="fas fa-dollar-sign"></i> Configuradas
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-list-check"></i> Regras de Comissão
+                            </h2>
+                            <div class="card-actions">
+                                <button class="btn btn-success" onclick="openRuleModal()">
+                                    <i class="fas fa-plus"></i> Nova Regra
+                                </button>
+                                <button class="btn btn-primary btn-sm" onclick="importRules()">
+                                    <i class="fas fa-upload"></i> Importar Excel
+                                </button>
+                                <button class="btn btn-primary btn-sm" onclick="exportRules()">
+                                    <i class="fas fa-download"></i> Exportar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- Controles de Busca e Filtro -->
+                            <div class="datatable-controls">
+                                <div class="datatable-search">
+                                    <input type="text" class="form-input" placeholder="Buscar regras..." id="ruleSearch">
+                                    <button class="btn btn-primary">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                                <div class="datatable-filters">
+                                    <select class="form-select" id="ruleTypeFilter">
+                                        <option value="">Todos os Tipos</option>
+                                        <option value="internal">Vendedor Interno</option>
+                                        <option value="external">Vendedor Externo</option>
+                                        <option value="special">Especial</option>
+                                    </select>
+                                    <select class="form-select" id="ruleFamilyFilter">
+                                        <option value="">Todas as Famílias</option>
+                                        <option value="PAINEL">PAINEL</option>
+                                        <option value="TELHA">TELHA</option>
+                                        <option value="PORTA">PORTA</option>
+<option value="PERFIL">PERFIL</option>
+                                        <option value="ACESSORIO">ACESSÓRIO</option>
+                                        <option value="ISOLAMENTO">ISOLAMENTO</option>
+                                        <option value="TODOS">TODOS</option>
+                                    </select>
+                                    <select class="form-select" id="ruleTableFilter">
+                                        <option value="">Todas as Tabelas</option>
+                                        <option value="BASESTD">BASESTD</option>
+                                        <option value="OLDSC">OLDSC</option>
+                                        <option value="TABPROMO">TABPROMO</option>
+                                        <option value="ESPECIAL">ESPECIAL</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="table-container">
+                                <table class="table" id="rulesTable">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <input type="checkbox" id="selectAllRules">
+                                            </th>
+                                            <th>Código</th>
+                                            <th>Tipo Vendedor</th>
+                                            <th>Família</th>
+                                            <th>Tabela</th>
+                                            <th>Faixa Desconto</th>
+                                            <th>Comissão Base</th>
+                                            <th>Vigência</th>
+                                            <th>Status</th>
+                                            <th>Última Atualização</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="rulesTableBody">
+                                        <tr>
+                                            <td><input type="checkbox" class="rule-checkbox"></td>
+                                            <td><strong>REGRA_10</strong></td>
+                                            <td><span class="badge badge-primary">Interno</span></td>
+                                            <td><span class="badge badge-purple">TODOS</span></td>
+                                            <td>BASESTD</td>
+                                            <td>0% - 10%</td>
+                                            <td><strong style="color: var(--ksi-green);">2.5%</strong></td>
+                                            <td>
+                                                01/07/2024 - ∞
+                                                <br>
+                                                <small class="text-muted">Sem expiração</small>
+                                            </td>
+                                            <td><span class="badge badge-success">Ativa</span></td>
+                                            <td>
+                                                15/01/2024
+                                                <br>
+                                                <small class="text-muted">Cicero Santos</small>
+                                            </td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="btn btn-sm btn-outline" onclick="viewRule('REGRA_10')" title="Visualizar">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-warning" onclick="editRule('REGRA_10')" title="Editar">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-success" onclick="duplicateRule('REGRA_10')" title="Duplicar">
+                                                        <i class="fas fa-copy"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" onclick="deleteRule('REGRA_10')" title="Excluir">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" class="rule-checkbox"></td>
+                                            <td><strong>REGRA_8</strong></td>
+                                            <td><span class="badge badge-warning">Externo</span></td>
+                                            <td><span class="badge badge-purple">TODOS</span></td>
+                                            <td>BASESTD</td>
+                                            <td>0% - 15%</td>
+                                            <td><strong style="color: var(--ksi-green);">1.0%</strong></td>
+                                            <td>
+                                                01/01/2022 - ∞
+                                                <br>
+                                                <small class="text-muted">Sem expiração</small>
+                                            </td>
+                                            <td><span class="badge badge-success">Ativa</span></td>
+                                            <td>
+                                                10/01/2024
+                                                <br>
+                                                <small class="text-muted">Maria Silva</small>
+                                            </td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="btn btn-sm btn-outline" onclick="viewRule('REGRA_8')" title="Visualizar">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-warning" onclick="editRule('REGRA_8')" title="Editar">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-success" onclick="duplicateRule('REGRA_8')" title="Duplicar">
+                                                        <i class="fas fa-copy"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" onclick="deleteRule('REGRA_8')" title="Excluir">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <!-- Regras VTI/VTE -->
+                                        <tr>
+                                            <td><input type="checkbox" class="rule-checkbox"></td>
+                                            <td><strong>VTI_001</strong></td>
+                                            <td><span class="badge badge-primary">Interno</span></td>
+                                            <td><span class="badge badge-purple">TODOS</span></td>
+                                            <td>BASESTD</td>
+                                            <td>0.177% - 0.354%</td>
+                                            <td><strong style="color: var(--ksi-green);">2.496%</strong></td>
+                                            <td>
+                                                01/01/2024 - ∞
+                                                <br>
+                                                <small class="text-muted">Sem expiração</small>
+                                            </td>
+                                            <td><span class="badge badge-success">Ativa</span></td>
+                                            <td>
+                                                01/01/2024
+                                                <br>
+                                                <small class="text-muted">Sistema</small>
+                                            </td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="btn btn-sm btn-outline" onclick="viewRule('VTI_001')" title="Visualizar">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-warning" onclick="editRule('VTI_001')" title="Editar">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" onclick="deleteRule('VTI_001')" title="Excluir">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Paginação -->
+                            <div class="datatable-pagination">
+                                <button class="pagination-btn" disabled>
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button class="pagination-btn active">1</button>
+                                <button class="pagination-btn">2</button>
+                                <button class="pagination-btn">3</button>
+                                <span>...</span>
+                                <button class="pagination-btn">56</button>
+                                <button class="pagination-btn">57</button>
+                                <button class="pagination-btn">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gráfico VTI/VTE -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-chart-line"></i> Curva de Comissão VTI/VTE
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                <span class="alert-icon"><i class="fas fa-info-circle"></i></span>
+                                <div class="alert-content">
+                                    <h4>Sistema de Desconto Progressivo</h4>
+                                    <p>564 níveis configurados automaticamente com cálculo progressivo de comissão baseado no desconto aplicado.</p>
+                                </div>
+                            </div>
+                            <div style="height: 400px; position: relative;">
+                                <canvas id="vtiChart"></canvas>
                             </div>
                         </div>
                     </div>
